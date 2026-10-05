@@ -57,7 +57,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
     // Update meta tags
     updateSEOMetadata(
-      `${product.name} — CliffCooks Ceramics`,
+      `${product.name} — Cliff Cooks Ceramics`,
       product.subtitle || product.description,
       product.images[0]?.url
     );
@@ -86,7 +86,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     const url = window.location.href;
     try {
       if (navigator.share) {
-        await navigator.share({ title: `${product.name} — CliffCooks`, url });
+        await navigator.share({ title: `${product.name} — Cliff Cooks`, url });
         return;
       }
       await navigator.clipboard.writeText(url);

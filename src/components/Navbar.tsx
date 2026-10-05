@@ -144,7 +144,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onScrollToSection('hero-showcase');
                 ceramicAudio.playCeramicChime(480, 1.5);
               }}
-              aria-label="CliffCooks home"
+              aria-label="Cliff Cooks home"
               className="group text-left min-h-[44px] flex items-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B9552D] focus-visible:ring-offset-4 focus-visible:ring-offset-[#FAF7F2]"
             >
               <Logo />

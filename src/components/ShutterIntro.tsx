@@ -141,7 +141,7 @@ export const ShutterIntro: React.FC<ShutterIntroProps> = ({ onComplete }) => {
 
             {/* Large Brand Heading */}
             <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif tracking-[0.08em] text-[#FAF7F2] font-normal mb-2 drop-shadow-lg text-center px-4">
-              CliffCooks: Pottery in the Kiln
+              Cliff Cooks: Pottery in the Kiln
             </h1>
 
             {/* Atelier Descriptor Subtitle */}

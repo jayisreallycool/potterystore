@@ -164,9 +164,9 @@ export default function App() {
     if (detailedProduct) {
       updateSEOForProduct(detailedProduct);
     } else if (isAboutOpen) {
-      updateSEOForPage('About Cliff', 'Meet Clifford, the home cook and ceramic artist behind CliffCooks handmade pottery.');
+      updateSEOForPage('About Cliff', 'Meet Clifford, the home cook and ceramic artist behind Cliff Cooks handmade pottery.');
     } else if (isCommissionsOpen) {
-      updateSEOForPage('Custom orders', 'Request a custom handmade ceramic piece from CliffCooks: choose the form, size, glaze and quantity.');
+      updateSEOForPage('Custom orders', 'Request a custom handmade ceramic piece from Cliff Cooks: choose the form, size, glaze and quantity.');
     } else {
       updateSEOForProduct(null);
     }

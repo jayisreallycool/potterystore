@@ -48,7 +48,7 @@ export function CustomerOrdersModal({ isOpen, onClose }: CustomerOrdersModalProp
                 Your orders
               </h3>
               <p className="text-xs text-[#736558]">
-                CliffCooks
+                Cliff Cooks
               </p>
             </div>
           </div>

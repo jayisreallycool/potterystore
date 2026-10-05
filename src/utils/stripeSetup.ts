@@ -20,7 +20,7 @@ export const STRIPE_CONFIG = {
   // Currency
   currency: 'usd',
   // Account name for payment processing
-  accountName: 'CliffCooks Ceramics'
+  accountName: 'Cliff Cooks Ceramics'
 };
 
 /**

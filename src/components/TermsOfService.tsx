@@ -36,13 +36,13 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ isOpen, onClose 
             <div>
               <h3 className="font-serif font-bold text-lg text-[#2C2723] mb-2">Agreement to Terms</h3>
               <p>
-                By accessing and using the CliffCooks website, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+                By accessing and using the Cliff Cooks website, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
               </p>
             </div>
 
             <div>
               <h3 className="font-serif font-bold text-lg text-[#2C2723] mb-2">Use License</h3>
-              <p className="mb-2">Permission is granted to temporarily download one copy of the materials (information or software) on CliffCooks website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+              <p className="mb-2">Permission is granted to temporarily download one copy of the materials (information or software) on Cliff Cooks website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
               <ul className="list-disc list-inside space-y-1">
                 <li>Modify or copy the materials</li>
                 <li>Use the materials for any commercial purpose or for any public display</li>
@@ -62,21 +62,21 @@ export const TermsOfService: React.FC<TermsOfServiceProps> = ({ isOpen, onClose 
             <div>
               <h3 className="font-serif font-bold text-lg text-[#2C2723] mb-2">Orders & Payment</h3>
               <p>
-                All orders are subject to confirmation by CliffCooks. We reserve the right to refuse or cancel any order. Once an order is placed, no payment will be collected until Clifford contacts you to confirm your order details and arrange payment and shipping. Prices and availability are subject to change without notice.
+                All orders are subject to confirmation by Cliff Cooks. We reserve the right to refuse or cancel any order. Once an order is placed, no payment will be collected until Clifford contacts you to confirm your order details and arrange payment and shipping. Prices and availability are subject to change without notice.
               </p>
             </div>
 
             <div>
               <h3 className="font-serif font-bold text-lg text-[#2C2723] mb-2">Limitation of Liability</h3>
               <p>
-                In no event shall CliffCooks be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on CliffCooks website, even if we or our authorized representative has been notified orally or in writing of the possibility of such damage.
+                In no event shall Cliff Cooks be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Cliff Cooks website, even if we or our authorized representative has been notified orally or in writing of the possibility of such damage.
               </p>
             </div>
 
             <div>
               <h3 className="font-serif font-bold text-lg text-[#2C2723] mb-2">Modifications</h3>
               <p>
-                CliffCooks may revise these terms of service for the website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service.
+                Cliff Cooks may revise these terms of service for the website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service.
               </p>
             </div>
 

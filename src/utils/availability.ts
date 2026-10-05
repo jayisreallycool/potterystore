@@ -9,7 +9,7 @@ export interface Availability {
 }
 
 /**
- * Every CliffCooks piece is made once. A piece is either available or sold,
+ * Every Cliff Cooks piece is made once. A piece is either available or sold,
  * whatever number is stored in stockCount.
  */
 export function getAvailability(product: PotteryProduct): Availability {

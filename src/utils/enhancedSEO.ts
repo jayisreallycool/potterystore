@@ -55,11 +55,11 @@ export const generateProductSchema = (product: PotteryProduct, baseUrl: string =
     image: imageUrls,
     brand: {
       '@type': 'Brand',
-      name: 'CliffCooks Ceramics'
+      name: 'Cliff Cooks Ceramics'
     },
     manufacturer: {
       '@type': 'Organization',
-      name: 'CliffCooks Ceramics'
+      name: 'Cliff Cooks Ceramics'
     },
     material: product.clay,
     artForm: 'Ceramics / Pottery',
@@ -74,7 +74,7 @@ export const generateProductSchema = (product: PotteryProduct, baseUrl: string =
       availability: product.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       seller: {
         '@type': 'Organization',
-        name: 'CliffCooks'
+        name: 'Cliff Cooks'
       }
     },
     craftProcess: product.artisanNotes || product.description
@@ -102,7 +102,7 @@ export const generateProductMetaTags = (product: PotteryProduct, baseUrl: string
     ].join(', '),
     canonical: productUrl,
     og: {
-      title: `${product.name} — CliffCooks`,
+      title: `${product.name} — Cliff Cooks`,
       description: product.subtitle,
       image: ogImage,
       url: productUrl,
@@ -110,7 +110,7 @@ export const generateProductMetaTags = (product: PotteryProduct, baseUrl: string
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${product.name} — CliffCooks`,
+      title: `${product.name} — Cliff Cooks`,
       description: product.subtitle,
       image: ogImage
     }
@@ -124,8 +124,8 @@ export const generateOrganizationSchema = (baseUrl: string = 'https://cliffcooks
   return {
     '@context': 'https://schema.org/',
     '@type': 'Organization',
-    name: 'CliffCooks',
-    legalName: 'CliffCooks Ceramics',
+    name: 'Cliff Cooks',
+    legalName: 'Cliff Cooks Ceramics',
     url: baseUrl,
     logo: `${baseUrl}/logo.svg`,
     sameAs: [

@@ -279,7 +279,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 {/* Certificate Card */}
                 <div className="p-5 rounded-2xl bg-[#F2EDE4] border border-[#E3D9CB] text-left max-w-md mx-auto space-y-2 text-xs">
                   <div className="flex items-center justify-between border-b border-[#DDD1C0] pb-2">
-                    <span className="font-serif font-bold text-[#2C2723]">CliffCooks</span>
+                    <span className="font-serif font-bold text-[#2C2723]">Cliff Cooks</span>
                     <span className="font-mono text-[#8C7D70]">{orderNumber}</span>
                   </div>
                   <p className="text-[#5A4E44]"><strong>Ship to:</strong> {formData.address}, {formData.city}</p>

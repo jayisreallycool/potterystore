@@ -3,9 +3,9 @@ import { PotteryProduct } from '../types';
 /**
  * Updates document meta tags dynamically for SEO as user interacts with pottery items
  */
-const SITE_NAME = 'CliffCooks';
-const DEFAULT_TITLE = 'CliffCooks: Pottery in the Kiln — Handmade Ceramics';
-const DEFAULT_DESCRIPTION = 'CliffCooks is small-batch handmade pottery by Clifford: bowls, plates, vases and mugs, wheel-thrown and kiln-fired.';
+const SITE_NAME = 'Cliff Cooks';
+const DEFAULT_TITLE = 'Cliff Cooks: Pottery in the Kiln — Handmade Ceramics';
+const DEFAULT_DESCRIPTION = 'Cliff Cooks is small-batch handmade pottery by Clifford: bowls, plates, vases and mugs, wheel-thrown and kiln-fired.';
 const DEFAULT_IMAGE = '/uploads/IMG_2640.webp';
 
 function applyMeta(title: string, description: string, image: string) {
@@ -95,7 +95,7 @@ function updateProductStructuredData(product: PotteryProduct) {
     'mpn': product.edition.batchCode,
     'brand': {
       '@type': 'Brand',
-      'name': 'CliffCooks'
+      'name': 'Cliff Cooks'
     },
     'material': product.clay,
     'category': product.category,
@@ -109,7 +109,7 @@ function updateProductStructuredData(product: PotteryProduct) {
       'itemCondition': 'https://schema.org/NewCondition',
       'seller': {
         '@type': 'Organization',
-        'name': 'CliffCooks'
+        'name': 'Cliff Cooks'
       }
     },
     'additionalProperty': [

@@ -49,7 +49,7 @@ export const ShippingReturns: React.FC<ShippingReturnsProps> = ({ isOpen, onClos
             <div>
               <h3 className="font-serif font-bold text-lg text-[#2C2723] mb-2">Packaging & Protection</h3>
               <p>
-                Every piece is double-boxed using recyclable wood straw and shock-absorbing honeycomb pulp to ensure safe arrival. CliffCooks guarantees 100% breakage-free delivery. If a piece arrives damaged, contact us immediately with photos and we will work with you to resolve the issue.
+                Every piece is double-boxed using recyclable wood straw and shock-absorbing honeycomb pulp to ensure safe arrival. Cliff Cooks guarantees 100% breakage-free delivery. If a piece arrives damaged, contact us immediately with photos and we will work with you to resolve the issue.
               </p>
             </div>
 

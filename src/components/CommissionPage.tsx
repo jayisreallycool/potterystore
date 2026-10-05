@@ -115,7 +115,7 @@ export const CommissionPage: React.FC<CommissionPageProps> = ({ referencePiece, 
             Have a piece made for you
           </h1>
           <p className="text-sm sm:text-base text-[#544A41] mt-4 leading-relaxed max-w-md">
-            Every CliffCooks piece is thrown and glazed by hand, so a custom order is just a conversation about what
+            Every Cliff Cooks piece is thrown and glazed by hand, so a custom order is just a conversation about what
             you want on your table. Tell Cliff what you have in mind and he'll reply by email.
           </p>
 

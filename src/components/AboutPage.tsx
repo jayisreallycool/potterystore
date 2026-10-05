@@ -24,7 +24,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onExploreCollection }) => 
             <span>The Studio Story</span>
           </div>
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-[#2C2723] leading-tight">
-            CliffCooks: Pottery in the Kiln
+            Cliff Cooks: Pottery in the Kiln
           </h1>
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-[#6B5E51] font-light leading-relaxed">
             Where food, craft, and everyday ritual intersect in small-batch ceramics.
@@ -63,7 +63,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onExploreCollection }) => 
             className="lg:col-span-6 space-y-6 text-[#4A4036] leading-relaxed text-base sm:text-lg font-light"
           >
             <p className="font-serif text-xl sm:text-2xl text-[#2C2723] leading-snug">
-              "CliffCooks: Pottery in the Kiln is a small-batch ceramics brand inspired by the connection between food, craft, and everyday ritual."
+              "Cliff Cooks: Pottery in the Kiln is a small-batch ceramics brand inspired by the connection between food, craft, and everyday ritual."
             </p>
             <p>
               Founded by <strong className="font-medium text-[#2C2723]">Clifford</strong>, a passionate home cook and ceramic artist, the collection features handmade bowls, plates, vases, candle holders, and mugs designed to elevate shared moments.

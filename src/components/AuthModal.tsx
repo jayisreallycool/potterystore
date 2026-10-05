@@ -81,7 +81,7 @@ export function AuthModal() {
             {authModalMode === 'signin' ? 'Sign in' : 'Create your account'}
           </h3>
           <p className="text-xs text-[#C4B7A6] mt-1">
-            {authModalMode === 'signin' ? 'Welcome back to CliffCooks' : 'Save your wishlist and track your orders'}
+            {authModalMode === 'signin' ? 'Welcome back to Cliff Cooks' : 'Save your wishlist and track your orders'}
           </p>
         </div>
 

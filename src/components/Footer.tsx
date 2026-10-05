@@ -181,7 +181,7 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#8A7B6D]">
-          <p>© 2026 CliffCooks. All pieces handmade by Clifford.</p>
+          <p>© 2026 Cliff Cooks. All pieces handmade by Clifford.</p>
           
           <div className="flex items-center gap-6">
             {onOpenAdminConsole && (

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Mail, Check, Shield, Compass, Heart, ArrowUp, Sparkles } from 'lucide-react';
+import { Mail, Check, Shield, Compass, Heart, ArrowUp, Sparkles, Instagram, Linkedin } from 'lucide-react';
+import { motion } from 'motion/react';
 import { Logo } from './Logo';
 import { ceramicAudio } from '../utils/audio';
 import { submitInquiry } from '../services/storeService';
@@ -177,6 +178,97 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
+        </div>
+
+        {/* Social Media Section */}
+        <div className="py-12 border-b border-[#3B3530]">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8">
+            <div className="text-center sm:text-left">
+              <p className="text-xs font-mono uppercase text-[#E2B17B] tracking-wider mb-2 font-semibold">
+                Follow the Studio
+              </p>
+              <p className="text-sm text-[#A69B8E] max-w-sm">
+                See what's coming next and join our community of ceramic collectors.
+              </p>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="flex items-center gap-6">
+              {/* Instagram */}
+              <motion.a
+                href="https://instagram.com/cliffcooks"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-[#E4405F] via-[#D92E7F] to-[#9B36B7] hover:shadow-lg transition-all"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Cliff Cooks on Instagram"
+                title="Follow us on Instagram"
+              >
+                <Instagram className="w-5 h-5 text-white" />
+              </motion.a>
+
+              {/* Pinterest - using a custom SVG since Lucide doesn't have Pinterest */}
+              <motion.a
+                href="https://pinterest.com/cliffcooks"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center w-12 h-12 rounded-full bg-[#E60023] hover:shadow-lg transition-all"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Cliff Cooks on Pinterest"
+                title="Follow us on Pinterest"
+              >
+                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.15.015.405 0 .405-.405v-3.338c-2.45.6-2.927-1.244-2.927-1.244-.12-.612-.465-1.644-.465-1.644-.405-2.7 1.095-3.37 1.095-3.37.9-.615 2.22-.42 2.22-.42.465 0 1.404.165 1.404-.405v-3.12c0-.12.015-.255.135-.405-.12 0-1.2-.12-1.98-.12-2.7 0-3.264 2.176-3.264 2.176-.6 1.488.165 2.31.165 2.31.465 1.494 1.665 1.215 2.16 1.215h.165v-2.73c-.12 0-.93-.075-1.215-.165-1.29-.33-2.265-1.494-2.265-2.88 0-2.16 1.665-3.915 3.915-3.915 2.25 0 3.915 1.755 3.915 3.915 0 1.386-.975 2.55-2.265 2.88-.285.09-1.095.165-1.215.165v2.73c.495 0 1.695.27 2.16-1.215.6-1.494 1.755-2.31 1.755-2.31 1.26-1.11 2.16-2.415 2.16-3.915 0-3.57-2.895-6.465-6.465-6.465-3.57 0-6.465 2.895-6.465 6.465 0 1.5.9 2.805 2.16 3.915.6 1.494 1.755 2.31 1.755 2.31.465 1.485 1.665 1.215 2.16 1.215v-2.73c-.12 0-.93-.075-1.215-.165-1.29-.33-2.265-1.494-2.265-2.88 0-2.16 1.665-3.915 3.915-3.915z"/>
+                </svg>
+              </motion.a>
+
+              {/* Facebook - using Lucide approximation */}
+              <motion.a
+                href="https://facebook.com/cliffcooks"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center w-12 h-12 rounded-full bg-[#1877F2] hover:shadow-lg transition-all"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Cliff Cooks on Facebook"
+                title="Follow us on Facebook"
+              >
+                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </motion.a>
+
+              {/* TikTok */}
+              <motion.a
+                href="https://tiktok.com/@cliffcooks"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center w-12 h-12 rounded-full bg-[#000000] hover:shadow-lg transition-all border border-[#25F4EE]"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Cliff Cooks on TikTok"
+                title="Follow us on TikTok"
+              >
+                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.1 1.82 2.89 2.89 0 0 1 5.1-1.82V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 5.07 2.41 6.3 6.3 0 0 0 5.44-10.66l-.02-.02v-.02a4.82 4.82 0 0 0 3.8-4.82v-.5a7.4 7.4 0 0 1-.43-.20z"/>
+                </svg>
+              </motion.a>
+
+              {/* Email Newsletter */}
+              <motion.a
+                href="mailto:hello@cliffcooks.studio"
+                className="group flex items-center justify-center w-12 h-12 rounded-full bg-[#8B4513] hover:bg-[#A0522D] hover:shadow-lg transition-all"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Email Cliff Cooks"
+                title="Email us"
+              >
+                <Mail className="w-5 h-5 text-white" />
+              </motion.a>
+            </div>
+          </div>
         </div>
 
         {/* Bottom Bar */}

@@ -2,30 +2,23 @@ import { PotteryProduct } from '../types';
 
 export interface Availability {
   isSold: boolean;
-  /** Short label, e.g. "One of a kind", "Last one", "3 left", "Sold" */
+  /** "One of a kind" while available, "Sold" once it's gone */
   label: string;
-  /** How many were made, e.g. "Batch of 10" (empty when unknown) */
+  /** Short note for the piece header */
   editionLabel: string;
 }
 
+/**
+ * Every CliffCooks piece is made once. A piece is either available or sold,
+ * whatever number is stored in stockCount.
+ */
 export function getAvailability(product: PotteryProduct): Availability {
-  const made = product.edition?.total ?? 0;
-  const left = Math.max(0, product.stockCount ?? 0);
-  const isSold = !product.inStock || left === 0;
-
-  let label: string;
-  if (isSold) {
-    label = 'Sold';
-  } else if (made === 1) {
-    label = 'One of a kind';
-  } else if (left === 1) {
-    label = 'Last one';
-  } else {
-    label = `${left} left`;
-  }
-
-  const editionLabel = made === 1 ? 'Only one made' : made > 1 ? `Batch of ${made}` : '';
-  return { isSold, label, editionLabel };
+  const isSold = !product.inStock || (product.stockCount ?? 0) <= 0;
+  return {
+    isSold,
+    label: isSold ? 'Sold' : 'One of a kind',
+    editionLabel: 'Only one made',
+  };
 }
 
 const CM_PER_INCH = 2.54;

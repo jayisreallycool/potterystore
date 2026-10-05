@@ -12,7 +12,7 @@ export const POTTERY_PRODUCTS: PotteryProduct[] = [
     firing: 'Gas Reduction Cone 10',
     glaze: 'Matte Celadon',
     edition: {
-      total: 10,
+      total: 1,
       current: 1,
       year: 2026,
       batchCode: 'SP-2640'
@@ -23,7 +23,7 @@ export const POTTERY_PRODUCTS: PotteryProduct[] = [
       weightGrams: 1250
     },
     inStock: true,
-    stockCount: 3,
+    stockCount: 1,
     isFeatured: true,
     tagline: 'Split glaze dialogue between deep oceanic cobalt and tranquil seafoam celadon.',
     description: 'A striking low-profile wheel-thrown ceramic platter exhibiting an exacting split glaze: one half dipped in deep cobalt blue, the other in translucent seafoam celadon. Supported by a minimalist bent wire display stand.',
@@ -71,8 +71,8 @@ export const POTTERY_PRODUCTS: PotteryProduct[] = [
     firing: 'Gas Reduction Cone 10',
     glaze: 'Raw Ash & Tenmoku',
     edition: {
-      total: 15,
-      current: 2,
+      total: 1,
+      current: 1,
       year: 2026,
       batchCode: 'CB-2639'
     },
@@ -83,7 +83,7 @@ export const POTTERY_PRODUCTS: PotteryProduct[] = [
       capacityMl: 380
     },
     inStock: true,
-    stockCount: 4,
+    stockCount: 1,
     isFeatured: true,
     tagline: 'Hand-thrown with subtle horizontal grooves under luminous deep indigo glaze.',
     description: 'A wheel-thrown ceramic bowl with visible hand throwing rings and a deep, glossy cobalt glaze. Perfectly proportioned for daily tea, ceremonial matcha, or culinary display.',
@@ -131,7 +131,7 @@ export const POTTERY_PRODUCTS: PotteryProduct[] = [
     firing: 'Pit Fired Smoke',
     glaze: 'Unglazed Smoked',
     edition: {
-      total: 8,
+      total: 1,
       current: 1,
       year: 2026,
       batchCode: 'SV-2638'
@@ -142,7 +142,7 @@ export const POTTERY_PRODUCTS: PotteryProduct[] = [
       weightGrams: 1350
     },
     inStock: true,
-    stockCount: 2,
+    stockCount: 1,
     isFeatured: true,
     tagline: 'Earthy unglazed stoneware with tactile sandy texture and primitive markings.',
     description: 'A tactile, organic cylindrical stoneware vessel with an earthy sand-colored body, iron speckling, and hand-carved markings. Exudes raw wabi-sabi simplicity.',
@@ -190,7 +190,7 @@ export const POTTERY_PRODUCTS: PotteryProduct[] = [
     firing: 'Gas Reduction Cone 10',
     glaze: 'Matte Celadon',
     edition: {
-      total: 12,
+      total: 1,
       current: 1,
       year: 2026,
       batchCode: 'TV-2636'
@@ -201,7 +201,7 @@ export const POTTERY_PRODUCTS: PotteryProduct[] = [
       weightGrams: 1480
     },
     inStock: true,
-    stockCount: 3,
+    stockCount: 1,
     isFeatured: true,
     tagline: 'Vibrant mottled emerald-turquoise glaze with atmospheric reduction streaks.',
     description: 'A majestic cylindrical vase finished with a complex reactive turquoise glaze that breaks into deep emeralds, copper flashes, and oxidized mineral shadows.',

@@ -38,14 +38,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [includeGiftBox, setIncludeGiftBox] = useState(false);
   const [inscription, setInscription] = useState('');
-  const [quantity, setQuantity] = useState(1);
   const [addedAnimation, setAddedAnimation] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
 
   // Start fresh whenever a different piece is opened
   useEffect(() => {
     setSelectedImageIndex(0);
-    setQuantity(1);
     setIncludeGiftBox(false);
     setInscription('');
     setLinkCopied(false);
@@ -82,9 +80,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   };
 
   const handleAdd = () => {
-    for (let i = 0; i < quantity; i++) {
-      onAddToCart(product, { giftBox: includeGiftBox, inscription });
-    }
+    onAddToCart(product, { giftBox: includeGiftBox, inscription });
     setAddedAnimation(true);
     ceramicAudio.playCeramicChime(820, 1.2);
     setTimeout(() => {
@@ -391,26 +387,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 ) : (
                 <div className="pt-3 border-t border-[#E8DFD3] flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 shrink-0">
                   <div className="flex items-center justify-between sm:justify-start gap-2">
-                    <div className="flex items-center bg-[#EFEAE1] rounded-full p-1 border border-[#DDD1C0]">
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        aria-label="Decrease quantity"
-                        className="w-10 h-10 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[#2C2723] hover:bg-[#E3D9CB] font-bold text-sm"
-                      >
-                        -
-                      </button>
-                      <span className="w-8 text-center text-xs font-mono font-semibold text-[#2C2723]">
-                        {quantity}
-                      </span>
-                      <button
-                        onClick={() => setQuantity(Math.min(product.stockCount, quantity + 1))}
-                        aria-label="Increase quantity"
-                        className="w-10 h-10 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[#2C2723] hover:bg-[#E3D9CB] font-bold text-sm"
-                      >
-                        +
-                      </button>
-                    </div>
-
                     <button
                       id="modal-add-to-cart-btn"
                       onClick={handleAdd}
@@ -433,15 +409,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   <button
                     id="modal-reserve-piece-btn"
                     onClick={() => {
-                      for (let i = 0; i < quantity; i++) {
-                        onReservePiece(product, { giftBox: includeGiftBox, inscription });
-                      }
+                      onReservePiece(product, { giftBox: includeGiftBox, inscription });
                       ceramicAudio.playCeramicChime(880, 1.2);
                     }}
                     className="flex-1 min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-4 sm:px-6 rounded-full bg-[#C8623A] text-white hover:bg-[#B3522C] active:scale-95 text-xs font-semibold uppercase tracking-wider transition-all shadow-md group"
                   >
                     <Bookmark className="w-4 h-4 text-white/90 group-hover:scale-110 transition-transform" />
-                    <span>Buy now • ${(product.price * quantity)}</span>
+                    <span>Buy now • ${product.price}</span>
                   </button>
                 </div>
                 )}

@@ -148,7 +148,7 @@ export function AdminConsole({ isOpen, onClose, products, onProductUpdated }: Ad
     .reduce((sum, o) => sum + (o.total || 0), 0);
   const pendingOrders = orders.filter(o => o.status === 'pending');
   const inProgressOrders = orders.filter(o => o.status === 'firing_in_progress');
-  const lowStockProducts = products.filter(p => p.stockCount <= 2 && p.inStock);
+  const lowStockProducts = products.filter(p => !p.inStock || p.stockCount <= 0);
 
   // Status Change
   const handleStatusChange = async (orderId: string, nextStatus: OrderRecord['status']) => {
@@ -194,7 +194,7 @@ export function AdminConsole({ isOpen, onClose, products, onProductUpdated }: Ad
         firing: 'Anagama Wood-Fired (72hr)',
         glaze: 'Raw Ash & Tenmoku',
         inStock: true,
-        stockCount: 5,
+        stockCount: 1,
         isFeatured: false,
         tagline: 'Artisanal wheel-thrown creation from the studio kiln.',
         description: 'Handcrafted stoneware vessel formed with traditional Japanese pottery techniques.',
@@ -203,7 +203,7 @@ export function AdminConsole({ isOpen, onClose, products, onProductUpdated }: Ad
         acousticResonance: 'Deep resonant tone (440Hz)',
         careInstructions: ['Hand wash gently with warm water', 'Vitrified Cone 10 stoneware'],
         dimensions: { heightCm: 22, diameterCm: 16, weightGrams: 1100 },
-        edition: { total: 10, current: 1, year: new Date().getFullYear(), batchCode: 'AUTUMN-26' },
+        edition: { total: 1, current: 1, year: new Date().getFullYear(), batchCode: 'AUTUMN-26' },
         accentColor: '#8B4513',
         roomContextImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85',
         tactileHotspots: [],
@@ -508,14 +508,14 @@ export function AdminConsole({ isOpen, onClose, products, onProductUpdated }: Ad
 
                 <div className="p-5 rounded-2xl bg-[#201D1A] border border-[#332D28]">
                   <div className="flex items-center justify-between text-xs text-[#A69B8E] mb-2">
-                    <span>Low Stock Notice</span>
+                    <span>Sold</span>
                     <AlertTriangle className="w-4 h-4 text-rose-400" />
                   </div>
                   <div className="font-serif text-3xl font-semibold text-rose-400">
                     {lowStockProducts.length}
                   </div>
                   <div className="text-[11px] text-[#A69B8E] mt-2">
-                    Pieces with ≤2 editions remaining
+                    Pieces marked as sold
                   </div>
                 </div>
               </div>
@@ -695,7 +695,7 @@ export function AdminConsole({ isOpen, onClose, products, onProductUpdated }: Ad
                             ${p.price}
                           </td>
                           <td className="py-3.5 px-4 font-mono text-[11px]">
-                            {p.stockCount} in kiln
+                            {!p.inStock || p.stockCount <= 0 ? 'Sold' : 'Available'}
                           </td>
                           <td className="py-3.5 px-4">
                             <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${
@@ -1104,12 +1104,13 @@ service firebase.storage {
 
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-[#A69B8E] mb-1 font-semibold">
-                    Stock Quantity
+                    Available (1) or sold (0)
                   </label>
                   <input
                     type="number"
                     min={0}
-                    value={productForm.stockCount ?? 5}
+                    max={1}
+                    value={productForm.stockCount ?? 1}
                     onChange={(e) => setProductForm({ ...productForm, stockCount: Number(e.target.value) })}
                     className="w-full px-3 py-2 bg-[#272320] border border-[#3B342F] rounded-xl text-xs text-[#FAF7F2] focus:outline-none focus:border-[#D97746]"
                   />

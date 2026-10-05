@@ -84,7 +84,9 @@ export default function App() {
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
       const saved = localStorage.getItem('kiln_clay_cart');
-      return saved ? JSON.parse(saved) : [];
+      const parsed: CartItem[] = saved ? JSON.parse(saved) : [];
+      // Each piece exists once, so a bag never holds more than one of it
+      return parsed.map((item) => ({ ...item, quantity: 1 }));
     } catch {
       return [];
     }
@@ -162,7 +164,7 @@ export default function App() {
       if (existing) {
         return prev.map((item) =>
           item.product.id === product.id
-            ? { ...item, quantity: item.quantity + 1, giftBoxIncluded: options?.giftBox ?? item.giftBoxIncluded }
+            ? { ...item, quantity: 1, giftBoxIncluded: options?.giftBox ?? item.giftBoxIncluded }
             : item
         );
       }
@@ -191,7 +193,7 @@ export default function App() {
       handleRemoveFromCart(productId);
     } else {
       setCart((prev) =>
-        prev.map((item) => (item.product.id === productId ? { ...item, quantity: qty } : item))
+        prev.map((item) => (item.product.id === productId ? { ...item, quantity: 1 } : item))
       );
     }
   };

@@ -149,23 +149,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
 
-                      <div className="flex items-center bg-[#FAF7F2] rounded-full p-0.5 border border-[#DDD1C0]">
-                        <button
-                          onClick={() => onUpdateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
-                          className="w-5 h-5 rounded-full flex items-center justify-center text-xs text-[#2C2723] hover:bg-[#EAE2D5]"
-                        >
-                          -
-                        </button>
-                        <span className="w-5 text-center text-xs font-mono font-medium">
-                          {item.quantity}
-                        </span>
-                        <button
-                          onClick={() => onUpdateQuantity(item.product.id, item.quantity + 1)}
-                          className="w-5 h-5 rounded-full flex items-center justify-center text-xs text-[#2C2723] hover:bg-[#EAE2D5]"
-                        >
-                          +
-                        </button>
-                      </div>
+                      <span className="text-[11px] text-[#7A6C5F]">One of a kind</span>
                     </div>
                   </div>
                 ))

@@ -7,7 +7,6 @@ import {
   Flame,
   Sparkles,
   Check,
-  Gift,
   Bookmark,
   Share2,
   PencilRuler
@@ -24,8 +23,8 @@ interface ProductDetailModalProps {
   allProducts?: PotteryProduct[];
   onClose: () => void;
   onRequestSimilar: (product: PotteryProduct) => void;
-  onAddToCart: (product: PotteryProduct, options?: { giftBox: boolean; inscription?: string }) => void;
-  onReservePiece: (product: PotteryProduct, options?: { giftBox: boolean; inscription?: string }) => void;
+  onAddToCart: (product: PotteryProduct, options?: { inscription?: string }) => void;
+  onReservePiece: (product: PotteryProduct, options?: { inscription?: string }) => void;
   onToggleWishlist: (product: PotteryProduct) => void;
   isWishlisted: boolean;
 }
@@ -41,7 +40,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   isWishlisted,
 }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [includeGiftBox, setIncludeGiftBox] = useState(false);
   const [inscription, setInscription] = useState('');
   const [addedAnimation, setAddedAnimation] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
@@ -49,7 +47,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   // Start fresh whenever a different piece is opened
   useEffect(() => {
     setSelectedImageIndex(0);
-    setIncludeGiftBox(false);
     setInscription('');
     setLinkCopied(false);
   }, [product?.id]);
@@ -101,7 +98,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   };
 
   const handleAdd = () => {
-    onAddToCart(product, { giftBox: includeGiftBox, inscription });
+    onAddToCart(product, { inscription });
     setAddedAnimation(true);
     ceramicAudio.playCeramicChime(820, 1.2);
     setTimeout(() => {
@@ -357,24 +354,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       Free extras
                     </span>
                     
-                    <label className="flex items-start gap-2.5 text-xs text-[#4A4036] cursor-pointer min-h-[44px]">
-                      <input
-                        type="checkbox"
-                        checked={includeGiftBox}
-                        onChange={(e) => setIncludeGiftBox(e.target.checked)}
-                        className="mt-0.5 w-5 h-5 sm:w-4 sm:h-4 rounded text-[#C8623A] focus:ring-[#C8623A]"
-                      />
-                      <div>
-                        <span className="font-medium text-[#2C2723] flex items-center gap-1">
-                          <Gift className="w-3.5 h-3.5 text-[#C8623A]" />
-                          Paulownia Wood Presentation Crate & Wax Seal (+Free)
-                        </span>
-                        <p className="text-[11px] text-[#8C7D70]">
-                          Packed in hand-crafted wood crate tied with traditional indigo cloth ribbon.
-                        </p>
-                      </div>
-                    </label>
-
                     <div className="pt-1">
                       <label className="block text-[11px] text-[#736558] mb-1">
                         Add a handwritten note (optional):
@@ -431,7 +410,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   <button
                     id="modal-reserve-piece-btn"
                     onClick={() => {
-                      onReservePiece(product, { giftBox: includeGiftBox, inscription });
+                      onReservePiece(product, { inscription });
                       ceramicAudio.playCeramicChime(880, 1.2);
                     }}
                     className="flex-1 min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-4 sm:px-6 rounded-full bg-[#C8623A] text-white hover:bg-[#B3522C] active:scale-95 text-xs font-semibold uppercase tracking-wider transition-all shadow-md group"

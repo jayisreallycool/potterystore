@@ -69,7 +69,6 @@ export interface CartItem {
   quantity: number;
   selectedFinish?: string;
   engravingText?: string;
-  giftBoxIncluded: boolean;
 }
 
 export interface FilterState {

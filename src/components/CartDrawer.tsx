@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Trash2, ShoppingBag, ArrowRight, Gift, Truck, Sparkles } from 'lucide-react';
+import { X, Trash2, ShoppingBag, ArrowRight, Truck, Sparkles } from 'lucide-react';
 import { CartItem } from '../types';
 import { ceramicAudio } from '../utils/audio';
 
@@ -21,16 +21,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onRemoveItem,
   onCheckout
 }) => {
-  const [giftWrapping, setGiftWrapping] = useState(false);
-
   if (!isOpen) return null;
 
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const freeShippingThreshold = 150;
   const amountToFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
   const shippingCost = subtotal >= freeShippingThreshold || subtotal === 0 ? 0 : 18;
-  const packagingCost = giftWrapping ? 15 : 0;
-  const total = subtotal + shippingCost + packagingCost;
+  const total = subtotal + shippingCost;
 
   return (
     <AnimatePresence>

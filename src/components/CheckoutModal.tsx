@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Check, ShieldCheck, Gift, Truck, FileCheck, ArrowRight } from 'lucide-react';
+import { X, Check, ShieldCheck, Truck, FileCheck, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { CartItem } from '../types';
 import { ceramicAudio } from '../utils/audio';
@@ -36,7 +36,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     state: '',
     postalCode: '',
     country: 'United States',
-    giftNote: '',
     paymentMethod: 'card'
   });
   const [isProcessing, setIsProcessing] = useState(false);
@@ -78,14 +77,12 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         quantity: item.quantity,
         image: item.product.images?.[0]?.url,
         selectedFinish: item.selectedFinish,
-        engravingText: item.engravingText,
-        giftBoxIncluded: item.giftBoxIncluded
+        engravingText: item.engravingText
       })),
       subtotal,
       shippingCost,
       total,
       status: 'pending',
-      notes: formData.giftNote ? `Gift note: ${formData.giftNote}` : undefined,
       createdAt: new Date().toISOString()
     };
 

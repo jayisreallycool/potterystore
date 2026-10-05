@@ -175,13 +175,13 @@ export default function App() {
   }, [detailedProduct, isAboutOpen, isCommissionsOpen]);
 
   // Cart actions
-  const handleAddToCart = useCallback((product: PotteryProduct, options?: { giftBox: boolean; inscription?: string }) => {
+  const handleAddToCart = useCallback((product: PotteryProduct, options?: { inscription?: string }) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.product.id === product.id);
       if (existing) {
         return prev.map((item) =>
           item.product.id === product.id
-            ? { ...item, quantity: 1, giftBoxIncluded: options?.giftBox ?? item.giftBoxIncluded }
+            ? { ...item, quantity: 1 }
             : item
         );
       }
@@ -190,7 +190,6 @@ export default function App() {
         {
           product,
           quantity: 1,
-          giftBoxIncluded: options?.giftBox ?? false,
           engravingText: options?.inscription
         }
       ];
@@ -198,7 +197,7 @@ export default function App() {
   }, []);
 
   // Reserve Piece direct reservation handler
-  const handleReservePiece = (product: PotteryProduct, options?: { giftBox: boolean; inscription?: string }) => {
+  const handleReservePiece = (product: PotteryProduct, options?: { inscription?: string }) => {
     handleAddToCart(product, options);
     if (routePieceId) navigate('/');
     setIsCartOpen(false);

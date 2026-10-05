@@ -325,6 +325,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               </AnimatePresence>
             </div>
 
+            {/* Login/Register Button */}
+            {!user && (
+              <button
+                id="navbar-login-btn"
+                onClick={() => openAuthModal('signin')}
+                aria-label="Login or register"
+                className="min-h-[44px] flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full bg-[#2C2723] text-[#FAF7F2] hover:bg-[#3F3732] active:scale-95 transition-all shadow-xs font-semibold text-xs tracking-wide"
+              >
+                <UserIcon className="w-4 h-4 text-[#E2B17B] shrink-0" />
+                <span className="hidden sm:inline">Login</span>
+              </button>
+            )}
+
             {/* Cart Drawer Trigger */}
             <button
               id="navbar-cart-btn"

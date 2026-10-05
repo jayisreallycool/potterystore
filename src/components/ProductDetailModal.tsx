@@ -16,6 +16,7 @@ import { ceramicAudio } from '../utils/audio';
 import { getAvailability, formatSize, formatWeight, formatCapacity } from '../utils/availability';
 import { InventoryBadge, LastOneAlert } from './InventoryBadge';
 import { SimilarPiecesCarousel } from './SimilarPiecesCarousel';
+import { ScrollingAnnouncement } from './ScrollingAnnouncement';
 import { generateProductSchema, injectSchema, updateSEOMetadata } from '../utils/enhancedSEO';
 
 interface ProductDetailModalProps {
@@ -127,6 +128,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           className="relative w-full max-w-5xl bg-[#FAF7F2] rounded-2xl sm:rounded-3xl shadow-2xl border border-[#E3D9CB] overflow-hidden z-10 my-auto max-h-[94vh] flex flex-col"
         >
+          {/* Scrolling Announcement Bar */}
+          <ScrollingAnnouncement text="One of a Kind • Limited Edition • One of a Kind • Limited Edition • One of a Kind • Limited Edition •" />
           {/* Top Bar with Close */}
           <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-[#E8DFD3] bg-[#FAF7F2] sticky top-0 z-20 shrink-0">
             <div className="flex items-center gap-2">

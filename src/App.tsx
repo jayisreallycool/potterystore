@@ -14,8 +14,10 @@ import { AuthModal } from './components/AuthModal';
 import { AdminConsole } from './components/AdminConsole';
 import { CustomerOrdersModal } from './components/CustomerOrdersModal';
 import { AboutPage } from './components/AboutPage';
+import { CommissionPage } from './components/CommissionPage';
+import { navigate, piecePath, useRoute } from './utils/router';
 import { subscribeToProducts } from './services/storeService';
-import { updateSEOForProduct } from './utils/seo';
+import { updateSEOForProduct, updateSEOForPage } from './utils/seo';
 
 const INITIAL_FILTERS: FilterState = {
   category: 'all',
@@ -45,11 +47,38 @@ export default function App() {
 
   // Showcase state
   const [activeProductIndex, setActiveProductIndex] = useState(0);
-  const [detailedProduct, setDetailedProduct] = useState<PotteryProduct | null>(null);
   const [isScaleVisualizerOpen, setIsScaleVisualizerOpen] = useState(false);
   const [isAdminConsoleOpen, setIsAdminConsoleOpen] = useState(false);
   const [isCustomerOrdersOpen, setIsCustomerOrdersOpen] = useState(false);
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
+
+  // The address bar decides which page or piece is showing, so every piece has a shareable link
+  const route = useRoute();
+  const isAboutOpen = route.name === 'about';
+  const isCommissionsOpen = route.name === 'custom-orders';
+  const routePieceId = route.name === 'piece' ? route.id : null;
+  const detailedProduct = routePieceId ? products.find((p) => p.id === routePieceId) || null : null;
+  const [commissionReference, setCommissionReference] = useState<PotteryProduct | null>(null);
+
+  const openProductDetail = useCallback((product: PotteryProduct) => {
+    navigate(piecePath(product.id));
+  }, []);
+
+  const closeProductDetail = useCallback(() => {
+    navigate('/');
+  }, []);
+
+  const openCommissions = useCallback((reference?: PotteryProduct | null) => {
+    setCommissionReference(reference ?? null);
+    navigate('/custom-orders');
+    window.scrollTo({ top: 0 });
+  }, []);
+
+  // Keep the showcase on the piece whose link was opened
+  useEffect(() => {
+    if (!routePieceId) return;
+    const idx = products.findIndex((p) => p.id === routePieceId);
+    if (idx !== -1) setActiveProductIndex(idx);
+  }, [routePieceId, products]);
 
   // Cart & Wishlist state with localStorage persistence
   const [cart, setCart] = useState<CartItem[]>(() => {
@@ -117,11 +146,14 @@ export default function App() {
   useEffect(() => {
     if (detailedProduct) {
       updateSEOForProduct(detailedProduct);
+    } else if (isAboutOpen) {
+      updateSEOForPage('About Cliff', 'Meet Clifford, the home cook and ceramic artist behind CliffCooks handmade pottery.');
+    } else if (isCommissionsOpen) {
+      updateSEOForPage('Custom orders', 'Request a custom handmade ceramic piece from CliffCooks: choose the form, size, glaze and quantity.');
     } else {
-      const currentProduct = products[activeProductIndex] || null;
-      updateSEOForProduct(currentProduct);
+      updateSEOForProduct(null);
     }
-  }, [detailedProduct, activeProductIndex, products]);
+  }, [detailedProduct, isAboutOpen, isCommissionsOpen]);
 
   // Cart actions
   const handleAddToCart = useCallback((product: PotteryProduct, options?: { giftBox: boolean; inscription?: string }) => {
@@ -149,7 +181,7 @@ export default function App() {
   // Reserve Piece direct reservation handler
   const handleReservePiece = (product: PotteryProduct, options?: { giftBox: boolean; inscription?: string }) => {
     handleAddToCart(product, options);
-    setDetailedProduct(null);
+    if (routePieceId) navigate('/');
     setIsCartOpen(false);
     setIsCheckoutOpen(true);
   };
@@ -181,7 +213,7 @@ export default function App() {
 
   // Category selection handler
   const handleSelectCategory = (catId: string) => {
-    setIsAboutOpen(false);
+    if (route.name !== 'home') navigate('/');
     const category = catId as ProductCategory;
     setFilters((f) => ({ ...f, category }));
     if (category !== 'all') {
@@ -194,7 +226,7 @@ export default function App() {
 
   // Search handler
   const handleSearchChange = (query: string) => {
-    setIsAboutOpen(false);
+    if (route.name !== 'home' && query.trim()) navigate('/');
     setFilters((f) => ({ ...f, searchQuery: query }));
     if (query.trim()) {
       const q = query.toLowerCase();
@@ -213,11 +245,16 @@ export default function App() {
 
   // Smooth scroll
   const handleScrollToSection = (sectionId: string) => {
-    setIsAboutOpen(false);
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (route.name !== 'home') navigate('/');
+    // Wait a frame so the section exists when coming back from another page
+    requestAnimationFrame(() => {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
   };
 
   // Checkout totals
@@ -238,10 +275,12 @@ export default function App() {
         onOpenAdminConsole={() => setIsAdminConsoleOpen(true)}
         onOpenCustomerOrders={() => setIsCustomerOrdersOpen(true)}
         onOpenAbout={() => {
-          setIsAboutOpen(true);
+          navigate('/about');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
         isAboutOpen={isAboutOpen}
+        onOpenCommissions={() => openCommissions(null)}
+        isCommissionsOpen={isCommissionsOpen}
         activeCategory={filters.category}
         onSelectCategory={handleSelectCategory}
         searchQuery={filters.searchQuery}
@@ -254,7 +293,15 @@ export default function App() {
         {isAboutOpen ? (
           <AboutPage
             onExploreCollection={() => {
-              setIsAboutOpen(false);
+              navigate('/');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          />
+        ) : isCommissionsOpen ? (
+          <CommissionPage
+            referencePiece={commissionReference}
+            onBrowsePieces={() => {
+              navigate('/');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           />
@@ -267,7 +314,7 @@ export default function App() {
             onReservePiece={handleReservePiece}
             onToggleWishlist={handleToggleWishlist}
             isWishlisted={isWishlisted}
-            onOpenProductDetail={setDetailedProduct}
+            onOpenProductDetail={openProductDetail}
           />
         )}
       </main>
@@ -275,6 +322,7 @@ export default function App() {
       {/* Footer */}
       <Footer 
         onReplayIntro={() => setIntroKey((k) => k + 1)}
+        onOpenCommissions={() => openCommissions(null)}
         onOpenAdminConsole={() => setIsAdminConsoleOpen(true)}
       />
 
@@ -284,7 +332,8 @@ export default function App() {
       {/* Product Detail Modal */}
       <ProductDetailModal
         product={detailedProduct}
-        onClose={() => setDetailedProduct(null)}
+        onClose={closeProductDetail}
+        onRequestSimilar={(p) => openCommissions(p)}
         onAddToCart={handleAddToCart}
         onReservePiece={handleReservePiece}
         onToggleWishlist={handleToggleWishlist}
@@ -323,7 +372,7 @@ export default function App() {
         wishlistProducts={wishlistProducts}
         onRemoveFromWishlist={handleToggleWishlist}
         onAddToCart={handleAddToCart}
-        onOpenProductDetail={setDetailedProduct}
+        onOpenProductDetail={openProductDetail}
       />
 
       {/* Checkout Modal */}
@@ -350,7 +399,7 @@ export default function App() {
         onProductUpdated={() => {}}
       />
 
-      {/* Customer Acquisitions & Orders Modal */}
+      {/* Customer orders */}
       <CustomerOrdersModal
         isOpen={isCustomerOrdersOpen}
         onClose={() => setIsCustomerOrdersOpen(false)}

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { PotteryProduct } from '../types';
 import { ceramicAudio } from '../utils/audio';
+import { getAvailability } from '../utils/availability';
 
 interface ShowcaseHeroProps {
   products: PotteryProduct[];
@@ -592,7 +593,7 @@ export const ShowcaseHero: React.FC<ShowcaseHeroProps> = ({
               </span>
 
               <span className="px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-mono bg-[#EFEAE1] text-[#7A6C5F] border border-[#DDD1C0]">
-                Batch {currentProduct.edition.batchCode} • #{String(currentProduct.edition.current).padStart(2, '0')} of {currentProduct.edition.total}
+                {getAvailability(currentProduct).editionLabel || `Batch ${currentProduct.edition.batchCode}`}
               </span>
             </div>
 
@@ -619,11 +620,11 @@ export const ShowcaseHero: React.FC<ShowcaseHeroProps> = ({
                 ${currentProduct.price}
               </span>
               <span className="text-[11px] sm:text-xs text-[#8A7B6D] font-mono">
-                USD • Signed Certificate
+                USD
               </span>
-              <div className="ml-auto flex items-center gap-1.5 text-xs text-[#4E7755] font-medium">
-                <span className="w-2 h-2 rounded-full bg-[#4E7755]"></span>
-                <span>{currentProduct.stockCount} in Stock</span>
+              <div className={`ml-auto flex items-center gap-1.5 text-xs font-semibold ${getAvailability(currentProduct).isSold ? 'text-[#8C7D70]' : 'text-[#4E7755]'}`}>
+                <span className={`w-2 h-2 rounded-full ${getAvailability(currentProduct).isSold ? 'bg-[#8C7D70]' : 'bg-[#4E7755]'}`}></span>
+                <span>{getAvailability(currentProduct).label}</span>
               </div>
             </div>
 
@@ -670,44 +671,56 @@ export const ShowcaseHero: React.FC<ShowcaseHeroProps> = ({
 
             {/* Primary Action Buttons (Mobile-first large touch targets) */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 mt-2 sm:mt-3">
-              {/* Reserve Piece CTA Button */}
-              <button
-                id="hero-reserve-piece-btn"
-                onClick={() => {
-                  onReservePiece(currentProduct);
-                  ceramicAudio.playCeramicChime(880, 1.2);
-                }}
-                className="flex-1 min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-5 rounded-full bg-[#C8623A] text-white hover:bg-[#B3522C] active:scale-[0.98] transition-all shadow-md group font-medium"
-              >
-                <Bookmark className="w-4 h-4 text-white/90 group-hover:scale-110 transition-transform" />
-                <span className="text-xs font-semibold tracking-wider uppercase">
-                  Reserve Piece • ${currentProduct.price}
-                </span>
-              </button>
+              {getAvailability(currentProduct).isSold ? (
+                <button
+                  id="hero-sold-details-btn"
+                  onClick={() => onOpenProductDetail(currentProduct)}
+                  className="flex-1 min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-5 rounded-full bg-[#2C2723] text-[#FAF7F2] hover:bg-[#3F3732] active:scale-[0.98] transition-all shadow-sm text-xs font-semibold"
+                >
+                  Sold — request a similar piece
+                </button>
+              ) : (
+                <>
+              {/* Buy now */}
+                <button
+                  id="hero-reserve-piece-btn"
+                  onClick={() => {
+                    onReservePiece(currentProduct);
+                    ceramicAudio.playCeramicChime(880, 1.2);
+                  }}
+                  className="flex-1 min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-5 rounded-full bg-[#C8623A] text-white hover:bg-[#B3522C] active:scale-[0.98] transition-all shadow-md group font-medium"
+                >
+                  <Bookmark className="w-4 h-4 text-white/90 group-hover:scale-110 transition-transform" />
+                  <span className="text-xs font-semibold tracking-wider uppercase">
+                    Buy now • ${currentProduct.price}
+                  </span>
+                </button>
 
-              {/* Add to Bag with feedback */}
-              <button
-                id="hero-add-to-cart-btn"
-                onClick={handleAddToCart}
-                className="min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-[#2C2723] text-[#FAF7F2] hover:bg-[#3F3732] active:scale-[0.98] transition-all shadow-sm group"
-                title="Add to Acquisition Bag"
-              >
-                {addedAnimation ? (
-                  <>
-                    <Check className="w-4 h-4 text-[#8FD19E]" />
-                    <span className="text-xs font-semibold tracking-wide uppercase">
-                      In Bag
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="w-4 h-4 text-[#E2B17B] group-hover:rotate-6 transition-transform" />
-                    <span className="text-xs font-semibold tracking-wide uppercase">
-                      Add to Bag
-                    </span>
-                  </>
-                )}
-              </button>
+                {/* Add to Bag with feedback */}
+                <button
+                  id="hero-add-to-cart-btn"
+                  onClick={handleAddToCart}
+                  className="min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-[#2C2723] text-[#FAF7F2] hover:bg-[#3F3732] active:scale-[0.98] transition-all shadow-sm group"
+                  title="Add to bag"
+                >
+                  {addedAnimation ? (
+                    <>
+                      <Check className="w-4 h-4 text-[#8FD19E]" />
+                      <span className="text-xs font-semibold tracking-wide uppercase">
+                        In Bag
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag className="w-4 h-4 text-[#E2B17B] group-hover:rotate-6 transition-transform" />
+                      <span className="text-xs font-semibold tracking-wide uppercase">
+                        Add to Bag
+                      </span>
+                    </>
+                  )}
+                </button>
+                </>
+              )}
 
               {/* Wishlist Heart */}
               <button
@@ -716,7 +729,7 @@ export const ShowcaseHero: React.FC<ShowcaseHeroProps> = ({
                   onToggleWishlist(currentProduct);
                   ceramicAudio.playCeramicChime(700, 0.8);
                 }}
-                aria-label="Add to curated collection"
+                aria-label="Save to wishlist"
                 className={`min-w-[48px] min-h-[48px] flex items-center justify-center rounded-full border transition-all ${
                   isWishlisted(currentProduct.id)
                     ? 'bg-[#C8623A] text-white border-[#C8623A] shadow-xs'
@@ -734,7 +747,7 @@ export const ShowcaseHero: React.FC<ShowcaseHeroProps> = ({
                 onClick={() => onOpenProductDetail(currentProduct)}
                 className="min-h-[36px] flex items-center gap-1 text-[#8B5A3E] hover:text-[#2C2723] font-medium underline underline-offset-2 transition-colors"
               >
-                <span>Read Glaze Recipe & Firing Curve</span>
+                <span>See full details, size and care</span>
                 <ArrowUpRight className="w-3 h-3" />
               </button>
               <span className="text-[10px] sm:text-[11px] font-mono text-[#A89A8C]">

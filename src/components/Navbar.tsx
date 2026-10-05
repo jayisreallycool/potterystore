@@ -32,6 +32,8 @@ interface NavbarProps {
   onOpenCustomerOrders: () => void;
   onOpenAbout: () => void;
   isAboutOpen: boolean;
+  onOpenCommissions: () => void;
+  isCommissionsOpen: boolean;
   activeCategory: string;
   onSelectCategory: (cat: string) => void;
   searchQuery: string;
@@ -49,6 +51,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenCustomerOrders,
   onOpenAbout,
   isAboutOpen,
+  onOpenCommissions,
+  isCommissionsOpen,
   activeCategory,
   onSelectCategory,
   searchQuery,
@@ -122,7 +126,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               id="mobile-menu-toggle-btn"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label={isMobileMenuOpen ? "Close studio navigation menu" : "Open studio navigation menu"}
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center -ml-2 rounded-full text-[#2C2723] hover:bg-[#EFEAE1] transition-colors focus:outline-none"
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -185,7 +189,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               id="navbar-wishlist-btn"
               onClick={onOpenWishlist}
-              aria-label="View curated wishlist"
+              aria-label="Wishlist"
               className="relative min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-[#5E5247] hover:text-[#2C2723] hover:bg-[#EFEAE1] transition-colors"
             >
               <Heart className="w-4 h-4" />
@@ -201,7 +205,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 id="navbar-admin-console-btn"
                 onClick={onOpenAdminConsole}
-                title="Open Studio Admin Console"
+                title="Open admin console"
                 className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#D97746]/15 hover:bg-[#D97746]/25 border border-[#D97746]/40 text-[#8B3E18] text-xs font-semibold tracking-wide transition-all"
               >
                 <Flame className="w-3.5 h-3.5 text-[#D97746] animate-pulse" />
@@ -215,7 +219,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   id="navbar-user-account-btn"
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  aria-label="Collector account menu"
+                  aria-label="Account menu"
                   className="min-h-[44px] flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-full border border-[#D9CEBE] bg-[#EFEAE1]/70 hover:bg-[#EFEAE1] text-[#2C2723] text-xs transition-colors"
                 >
                   {user.photoURL ? (
@@ -230,7 +234,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </div>
                   )}
                   <span className="hidden md:inline font-medium max-w-[100px] truncate text-xs">
-                    {user.displayName?.split(' ')[0] || 'Collector'}
+                    {user.displayName?.split(' ')[0] || 'Account'}
                   </span>
                   {isAdmin && (
                     <span className="w-2 h-2 rounded-full bg-[#D97746] shrink-0" title="Admin" />
@@ -259,7 +263,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   >
                     <div className="p-2.5 rounded-xl bg-[#F2EDE4] border border-[#E3D9CB] mb-2">
                       <div className="font-semibold text-[#2C2723] truncate">
-                        {user.displayName || 'Collector Patron'}
+                        {user.displayName || 'Your account'}
                       </div>
                       <div className="text-[10px] text-[#736558] font-mono truncate">
                         {user.email}
@@ -270,7 +274,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             ? 'bg-[#D97746]/20 text-[#8B3E18] border border-[#D97746]/30' 
                             : 'bg-stone-200 text-stone-700'
                         }`}>
-                          {isAdmin ? 'Master Potter / Admin' : 'Registered Patron'}
+                          {isAdmin ? 'Admin' : 'Customer'}
                         </span>
                       </div>
                     </div>
@@ -297,7 +301,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left hover:bg-[#EFEAE1] text-[#2C2723] transition-colors"
                       >
                         <PackageCheck className="w-4 h-4 text-[#736558]" />
-                        <span>My Acquisitions / Orders</span>
+                        <span>My orders</span>
                       </button>
 
                       <button
@@ -341,7 +345,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Desktop navigation row */}
         <nav aria-label="Shop" className="hidden lg:flex items-center gap-7 border-t border-[#ECE5DA]">
           {navCategories.map((cat) => {
-            const isActive = !isAboutOpen && activeCategory === cat.id;
+            const isActive = !isAboutOpen && !isCommissionsOpen && activeCategory === cat.id;
             return (
               <button
                 key={cat.id}
@@ -364,13 +368,29 @@ export const Navbar: React.FC<NavbarProps> = ({
           })}
 
           <button
+            id="nav-custom-orders-btn"
+            aria-current={isCommissionsOpen ? 'page' : undefined}
+            onClick={() => {
+              onOpenCommissions();
+              ceramicAudio.playSlideSound();
+            }}
+            className={`ml-auto relative px-1 py-3 text-[13px] font-medium transition-colors focus:outline-none focus-visible:text-[#B9552D] after:absolute after:left-1 after:right-1 after:bottom-1.5 after:h-[2px] after:rounded-full after:transition-transform after:duration-300 after:origin-left ${
+              isCommissionsOpen
+                ? 'text-[#2C2723] after:bg-[#B9552D] after:scale-x-100'
+                : 'text-[#695E54] hover:text-[#2C2723] after:bg-[#D6CABE] after:scale-x-0 hover:after:scale-x-100'
+            }`}
+          >
+            Custom orders
+          </button>
+
+          <button
             id="nav-about-btn"
             aria-current={isAboutOpen ? 'page' : undefined}
             onClick={() => {
               onOpenAbout();
               ceramicAudio.playSlideSound();
             }}
-            className={`ml-auto relative px-1 py-3 text-[13px] font-medium transition-colors focus:outline-none focus-visible:text-[#B9552D] after:absolute after:left-1 after:right-1 after:bottom-1.5 after:h-[2px] after:rounded-full after:transition-transform after:duration-300 after:origin-left ${
+            className={`relative px-1 py-3 text-[13px] font-medium transition-colors focus:outline-none focus-visible:text-[#B9552D] after:absolute after:left-1 after:right-1 after:bottom-1.5 after:h-[2px] after:rounded-full after:transition-transform after:duration-300 after:origin-left ${
               isAboutOpen
                 ? 'text-[#2C2723] after:bg-[#B9552D] after:scale-x-100'
                 : 'text-[#695E54] hover:text-[#2C2723] after:bg-[#D6CABE] after:scale-x-0 hover:after:scale-x-100'
@@ -437,8 +457,24 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
 
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#8C7D70] block mb-2 font-semibold">
-                  Studio Collections
+                <button
+                  onClick={() => {
+                    onOpenCommissions();
+                    setIsMobileMenuOpen(false);
+                    ceramicAudio.playSlideSound();
+                  }}
+                  className={`w-full min-h-[44px] px-4 py-2.5 rounded-xl text-left text-xs font-semibold transition-all flex items-center justify-between mb-3 ${
+                    isCommissionsOpen
+                      ? 'bg-[#2C2723] text-[#FAF7F2]'
+                      : 'bg-[#F2EDE4] text-[#2C2723] hover:bg-[#EAE2D5]'
+                  }`}
+                >
+                  <span>Custom orders</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+
+                <span className="text-xs text-[#8C7D70] block mb-2 font-semibold">
+                  Shop by type
                 </span>
                 <div className="grid grid-cols-2 gap-2">
                   {navCategories.map((cat) => (
@@ -465,19 +501,19 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {/* Account / Admin Mobile Section */}
               <div className="pt-2 border-t border-[#E8DFD3] space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#8C7D70] block font-semibold">
-                  Collector & Atelier Access
+                <span className="text-xs text-[#8C7D70] block font-semibold">
+                  Your account
                 </span>
                 
                 {user ? (
                   <div className="space-y-2">
                     <div className="p-3 rounded-xl bg-[#F2EDE4] flex items-center justify-between">
                       <div>
-                        <div className="font-semibold text-xs text-[#2C2723]">{user.displayName || 'Collector'}</div>
+                        <div className="font-semibold text-xs text-[#2C2723]">{user.displayName || 'Your account'}</div>
                         <div className="text-[10px] text-[#736558] font-mono">{user.email}</div>
                       </div>
                       <span className="px-2 py-0.5 rounded-full text-[9px] font-mono uppercase bg-[#2C2723] text-[#FAF7F2]">
-                        {isAdmin ? 'Admin' : 'Patron'}
+                        {isAdmin ? 'Admin' : 'Customer'}
                       </span>
                     </div>
 
@@ -491,7 +527,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       >
                         <div className="flex items-center gap-2">
                           <Flame className="w-4 h-4" />
-                          <span>Kiln & Clay Admin Console</span>
+                          <span>Admin console</span>
                         </div>
                         <ArrowRight className="w-4 h-4" />
                       </button>
@@ -506,7 +542,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     >
                       <div className="flex items-center gap-2">
                         <PackageCheck className="w-4 h-4 text-[#736558]" />
-                        <span>My Acquisitions / Order Status</span>
+                        <span>My orders</span>
                       </div>
                       <ArrowRight className="w-4 h-4 opacity-60" />
                     </button>
@@ -532,7 +568,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     >
                       <div className="flex items-center gap-2">
                         <UserIcon className="w-4 h-4 text-[#D97746]" />
-                        <span>Sign In / Join Studio</span>
+                        <span>Sign in or create account</span>
                       </div>
                       <ArrowRight className="w-4 h-4" />
                     </button>
@@ -544,7 +580,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       }}
                       className="w-full p-2.5 rounded-xl border border-[#D9CEBE] text-center text-xs text-[#736558] hover:text-[#2C2723]"
                     >
-                      Master Potter / Admin Login
+                      Admin sign in
                     </button>
                   </div>
                 )}
@@ -560,15 +596,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className="w-full min-h-[44px] p-3 rounded-xl bg-[#EFEAE1] text-[#2C2723] flex items-center gap-3 text-xs font-medium"
                 >
                   <Compass className="w-4 h-4 text-[#C8623A]" />
-                  <span>Open Room & Object Scale Visualizer</span>
+                  <span>See pieces to scale</span>
                 </button>
               </div>
 
               {/* Acoustic Sound Setting */}
               <div className="p-3.5 rounded-xl bg-[#F2EDE4] flex items-center justify-between text-xs">
                 <div>
-                  <span className="font-serif font-medium text-[#2C2723] block">Ceramic Acoustic Chimes</span>
-                  <span className="text-[10px] text-[#8A7B6D]">Authentic pottery resonance ring</span>
+                  <span className="font-medium text-[#2C2723] block">Sound effects</span>
+                  <span className="text-[10px] text-[#8A7B6D]">Soft chimes when you tap</span>
                 </div>
                 <button
                   onClick={handleAudioToggle}

@@ -57,7 +57,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               <div className="flex items-center gap-2.5">
                 <ShoppingBag className="w-5 h-5 text-[#C8623A]" />
                 <h2 className="font-serif text-2xl text-[#2C2723] font-medium">
-                  Atelier Acquisition Bag
+                  Your bag
                 </h2>
                 <span className="text-xs font-mono text-[#8C7D70]">
                   ({items.reduce((s, i) => s + i.quantity, 0)})
@@ -89,7 +89,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               ) : (
                 <div className="flex items-center gap-2 text-[#4E7755] font-medium">
                   <Truck className="w-4 h-4 text-[#4E7755]" />
-                  <span>Complimentary Insured Studio Shipping Unlocked!</span>
+                  <span>You've got free shipping</span>
                 </div>
               )}
             </div>
@@ -101,7 +101,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   <div className="w-16 h-16 rounded-full bg-[#EFEAE1] flex items-center justify-center mx-auto mb-3 text-[#A39587]">
                     <ShoppingBag className="w-8 h-8" />
                   </div>
-                  <p className="font-serif text-xl text-[#2C2723]">Your Bag is Empty</p>
+                  <p className="font-serif text-xl text-[#2C2723]">Your bag is empty</p>
                   <p className="text-xs text-[#8A7B6D] mt-1 max-w-xs mx-auto">
                     Explore our wood-fired and reduction glazed vessels on the main showcase stage.
                   </p>
@@ -181,13 +181,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     <span className="font-mono text-[#2C2723]">${subtotal}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Insured Studio Packaging</span>
+                    <span>Shipping</span>
                     <span className="font-mono text-[#2C2723]">
-                      {shippingCost === 0 ? 'Complimentary' : `$${shippingCost}`}
+                      {shippingCost === 0 ? 'Free' : `$${shippingCost}`}
                     </span>
                   </div>
                   <div className="flex justify-between text-base font-semibold text-[#2C2723] pt-2 border-t border-[#E8DFD3]">
-                    <span className="font-serif">Acquisition Total</span>
+                    <span className="font-serif">Total</span>
                     <span className="font-serif text-lg">${total}</span>
                   </div>
                 </div>
@@ -197,7 +197,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   onClick={onCheckout}
                   className="w-full py-3.5 px-6 rounded-full bg-[#2C2723] text-[#FAF7F2] hover:bg-[#3F3732] active:scale-[0.98] text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md"
                 >
-                  <span>Proceed to Acquisition Checkout</span>
+                  <span>Checkout</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>

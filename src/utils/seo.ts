@@ -3,31 +3,55 @@ import { PotteryProduct } from '../types';
 /**
  * Updates document meta tags dynamically for SEO as user interacts with pottery items
  */
-export function updateSEOForProduct(product?: PotteryProduct | null) {
-  if (!product) {
-    document.title = 'KILN & CLAY — Artisanal Handcrafted Pottery Studio';
-    updateMeta('description', 'Handcrafted ceramic vessels, wheel-thrown stoneware, and tactile home pottery made with natural glazes and wood-fired kiln finishes.');
-    updateMeta('og:title', 'KILN & CLAY — Artisanal Pottery Studio');
-    updateMeta('og:description', 'Discover wheel-thrown stoneware, reduction wood-fired vessels, and bespoke studio ceramics.');
-    updateMeta('og:image', '/uploads/IMG_2640.webp');
-    updateMeta('twitter:title', 'KILN & CLAY — Artisanal Pottery Studio');
-    updateMeta('twitter:description', 'Discover wheel-thrown stoneware, reduction wood-fired vessels, and bespoke studio ceramics.');
-    updateMeta('twitter:image', '/uploads/IMG_2640.webp');
-    return;
-  }
+const SITE_NAME = 'CliffCooks';
+const DEFAULT_TITLE = 'CliffCooks: Pottery in the Kiln — Handmade Ceramics';
+const DEFAULT_DESCRIPTION = 'CliffCooks is small-batch handmade pottery by Clifford: bowls, plates, vases and mugs, wheel-thrown and kiln-fired.';
+const DEFAULT_IMAGE = '/uploads/IMG_2640.webp';
 
-  const title = `${product.name} (${product.japaneseName}) — KILN & CLAY Studio`;
-  const description = `${product.subtitle}. Thrown with ${product.clay}, fired in ${product.firing}, glazed in ${product.glaze}. $${product.price} USD.`;
-  const imageUrl = product.images[0]?.webpUrl || product.images[0]?.url || '/uploads/IMG_2640.webp';
-
+function applyMeta(title: string, description: string, image: string) {
   document.title = title;
   updateMeta('description', description);
   updateMeta('og:title', title);
   updateMeta('og:description', description);
-  updateMeta('og:image', imageUrl);
+  updateMeta('og:image', image);
+  updateMeta('og:url', window.location.href);
   updateMeta('twitter:title', title);
   updateMeta('twitter:description', description);
-  updateMeta('twitter:image', imageUrl);
+  updateMeta('twitter:image', image);
+  updateCanonical();
+}
+
+function updateCanonical() {
+  let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'canonical';
+    document.head.appendChild(link);
+  }
+  link.href = window.location.origin + window.location.pathname;
+}
+
+/** Title and description for a non-product page such as About or Custom orders */
+export function updateSEOForPage(pageTitle: string, description: string) {
+  applyMeta(`${pageTitle} — ${SITE_NAME}`, description, DEFAULT_IMAGE);
+  document.getElementById('product-jsonld')?.remove();
+}
+
+/**
+ * Updates document meta tags for the piece being viewed (or the home page when there is none)
+ */
+export function updateSEOForProduct(product?: PotteryProduct | null) {
+  if (!product) {
+    applyMeta(DEFAULT_TITLE, DEFAULT_DESCRIPTION, DEFAULT_IMAGE);
+    document.getElementById('product-jsonld')?.remove();
+    return;
+  }
+
+  const title = `${product.name} — ${SITE_NAME}`;
+  const description = `${product.subtitle}. ${product.clay}, ${product.glaze}. $${product.price} USD.`;
+  const imageUrl = product.images[0]?.webpUrl || product.images[0]?.url || DEFAULT_IMAGE;
+
+  applyMeta(title, description, imageUrl);
 
   // Inject or update Schema.org Product Structured Data
   updateProductStructuredData(product);
@@ -71,7 +95,7 @@ function updateProductStructuredData(product: PotteryProduct) {
     'mpn': product.edition.batchCode,
     'brand': {
       '@type': 'Brand',
-      'name': 'KILN & CLAY Atelier'
+      'name': 'CliffCooks'
     },
     'material': product.clay,
     'category': product.category,
@@ -81,11 +105,11 @@ function updateProductStructuredData(product: PotteryProduct) {
       'priceCurrency': 'USD',
       'price': product.price,
       'priceValidUntil': '2027-12-31',
-      'availability': product.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      'availability': product.inStock && product.stockCount > 0 ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
       'itemCondition': 'https://schema.org/NewCondition',
       'seller': {
         '@type': 'Organization',
-        'name': 'KILN & CLAY Pottery Studio'
+        'name': 'CliffCooks'
       }
     },
     'additionalProperty': [

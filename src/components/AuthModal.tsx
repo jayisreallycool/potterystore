@@ -78,10 +78,10 @@ export function AuthModal() {
           </div>
           
           <h3 className="font-serif text-2xl tracking-wide">
-            {authModalMode === 'signin' ? 'Atelier Portal' : 'Join the Studio'}
+            {authModalMode === 'signin' ? 'Sign in' : 'Create your account'}
           </h3>
-          <p className="text-xs text-[#C4B7A6] tracking-widest uppercase mt-1">
-            {authModalMode === 'signin' ? 'Sign in to your collector account' : 'Bespoke commissions & archival acquisitions'}
+          <p className="text-xs text-[#C4B7A6] mt-1">
+            {authModalMode === 'signin' ? 'Welcome back to CliffCooks' : 'Save your wishlist and track your orders'}
           </p>
         </div>
 
@@ -151,7 +151,7 @@ export function AuthModal() {
                     required
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
-                    placeholder="e.g. Eleanor Vance"
+                    placeholder="Your name"
                     className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#D9D0C1] rounded-xl text-sm text-[#2C2723] placeholder-[#A89F91] focus:outline-none focus:ring-2 focus:ring-[#D97746]/30 focus:border-[#D97746]"
                   />
                 </div>
@@ -169,7 +169,7 @@ export function AuthModal() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="patron@studio.com"
+                  placeholder="you@example.com"
                   className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#D9D0C1] rounded-xl text-sm text-[#2C2723] placeholder-[#A89F91] focus:outline-none focus:ring-2 focus:ring-[#D97746]/30 focus:border-[#D97746]"
                 />
               </div>
@@ -202,7 +202,7 @@ export function AuthModal() {
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  <span>{authModalMode === 'signin' ? 'Sign In to Atelier' : 'Create Account'}</span>
+                  <span>{authModalMode === 'signin' ? 'Sign in' : 'Create account'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}

@@ -29,12 +29,12 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const { user } = useAuth();
   const [step, setStep] = useState<'form' | 'success'>('form');
   const [formData, setFormData] = useState({
-    fullName: user?.displayName || 'Eleanor Vance',
-    email: user?.email || 'eleanor.vance@atelier.com',
-    address: '428 Meadowbrook Lane',
-    city: 'Beacon',
-    state: 'NY',
-    postalCode: '12508',
+    fullName: user?.displayName || '',
+    email: user?.email || '',
+    address: '',
+    city: '',
+    state: '',
+    postalCode: '',
     country: 'United States',
     giftNote: '',
     paymentMethod: 'card'
@@ -60,12 +60,12 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     setIsProcessing(true);
     setErrorMessage(null);
     
-    const generatedOrder = 'KC-' + Math.floor(100000 + Math.random() * 900000);
+    const generatedOrder = 'CC-' + Math.floor(100000 + Math.random() * 900000);
 
     const orderPayload: OrderRecord = {
       id: generatedOrder,
       userId: user?.uid || 'guest',
-      customerName: formData.fullName.trim() || 'Valued Collector',
+      customerName: formData.fullName.trim() || 'Customer',
       customerEmail: formData.email.trim(),
       shippingAddress: formData.address.trim(),
       city: formData.city.trim(),
@@ -139,7 +139,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           <div className="flex items-center justify-between px-6 py-4 border-b border-[#E8DFD3] bg-[#FAF7F2]">
             <div className="flex items-center gap-2">
               <span className="font-serif text-xl sm:text-2xl text-[#2C2723] font-medium">
-                {step === 'form' ? 'Studio Acquisition Checkout' : 'Acquisition Confirmed'}
+                {step === 'form' ? 'Checkout' : 'Order received'}
               </span>
             </div>
             <button
@@ -155,8 +155,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               <form onSubmit={handleSubmitOrder} className="space-y-6">
                 {/* Order Summary Recap */}
                 <div className="p-4 rounded-2xl bg-[#F2EDE4] border border-[#E3D9CB]">
-                  <span className="text-xs font-mono uppercase text-[#736558] block mb-2 font-semibold">
-                    Acquisition Manifest ({items.length} Unique Works)
+                  <span className="text-xs text-[#736558] block mb-2 font-semibold">
+                    Your order ({items.length} {items.length === 1 ? 'piece' : 'pieces'})
                   </span>
                   <div className="space-y-2 max-h-36 overflow-y-auto custom-scroll pr-1">
                     {items.map(item => (
@@ -171,7 +171,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     ))}
                   </div>
                   <div className="border-t border-[#DDD1C0] mt-3 pt-2 flex items-center justify-between text-xs font-semibold text-[#2C2723]">
-                    <span>Total (Incl. Insured Studio Freight)</span>
+                    <span>Total including shipping</span>
                     <span className="font-serif text-base">${total}</span>
                   </div>
                 </div>
@@ -183,7 +183,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   </span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] text-[#736558] mb-1">Collector Name</label>
+                      <label className="block text-[11px] text-[#736558] mb-1">Full name</label>
                       <input
                         type="text"
                         required
@@ -193,7 +193,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] text-[#736558] mb-1">Email For Certificate</label>
+                      <label className="block text-[11px] text-[#736558] mb-1">Email</label>
                       <input
                         type="email"
                         required
@@ -251,10 +251,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   className="w-full py-4 rounded-full bg-[#2C2723] text-[#FAF7F2] hover:bg-[#3F3732] active:scale-[0.99] text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md disabled:opacity-50"
                 >
                   {isProcessing ? (
-                    <span>Registering Piece to Studio Archive...</span>
+                    <span>Placing your order…</span>
                   ) : (
                     <>
-                      <span>Authorize Acquisition • ${total}</span>
+                      <span>Place order • ${total}</span>
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
@@ -268,33 +268,33 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 </div>
 
                 <div>
-                  <span className="text-xs font-mono text-[#C8623A] uppercase tracking-wider font-semibold">
-                    Registry Code: {orderNumber}
+                  <span className="text-xs font-mono text-[#C8623A] font-semibold">
+                    Order number: {orderNumber}
                   </span>
                   <h3 className="font-serif text-3xl text-[#2C2723] mt-1">
-                    Thank You, {formData.fullName}
+                    Thank you, {formData.fullName}
                   </h3>
                   <p className="text-xs text-[#736558] max-w-md mx-auto mt-2 leading-relaxed">
-                    Your handcrafted ceramics are being carefully prepared, wrapped in custom studio tissue, and packaged with their signed Certificate of Authenticity.
+                    Your order is in. No payment has been taken yet: Cliff will email you to confirm the pieces and arrange payment and shipping.
                   </p>
                 </div>
 
                 {/* Certificate Card */}
                 <div className="p-5 rounded-2xl bg-[#F2EDE4] border border-[#E3D9CB] text-left max-w-md mx-auto space-y-2 text-xs">
                   <div className="flex items-center justify-between border-b border-[#DDD1C0] pb-2">
-                    <span className="font-serif font-bold text-[#2C2723]">CLIFF COOKS ARCHIVE</span>
-                    <span className="font-mono text-[#8C7D70]">BATCH CONFIRMATION</span>
+                    <span className="font-serif font-bold text-[#2C2723]">CliffCooks</span>
+                    <span className="font-mono text-[#8C7D70]">{orderNumber}</span>
                   </div>
-                  <p className="text-[#5A4E44]"><strong>Dispatched to:</strong> {formData.address}, {formData.city}</p>
-                  <p className="text-[#5A4E44]"><strong>Tracking Link:</strong> Sent to {formData.email}</p>
-                  <p className="text-[#5A4E44]"><strong>Kiln Master Stamp:</strong> Signed by Clifford (CliffCooks)</p>
+                  <p className="text-[#5A4E44]"><strong>Ship to:</strong> {formData.address}, {formData.city}</p>
+                  <p className="text-[#5A4E44]"><strong>We'll email:</strong> {formData.email}</p>
+                  <p className="text-[#5A4E44]"><strong>Total:</strong> ${total} (not yet charged)</p>
                 </div>
 
                 <button
                   onClick={onClose}
                   className="px-8 py-3 rounded-full bg-[#2C2723] text-[#FAF7F2] text-xs font-semibold uppercase tracking-wider hover:bg-[#3F3732] transition-colors"
                 >
-                  Return to Studio Showcase
+                  Keep browsing
                 </button>
               </div>
             )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   X, 
@@ -8,14 +8,18 @@ import {
   Sparkles, 
   Check, 
   Gift,
-  Bookmark
+  Bookmark,
+  Share2,
+  PencilRuler
 } from 'lucide-react';
 import { PotteryProduct } from '../types';
 import { ceramicAudio } from '../utils/audio';
+import { getAvailability, formatSize, formatWeight, formatCapacity } from '../utils/availability';
 
 interface ProductDetailModalProps {
   product: PotteryProduct | null;
   onClose: () => void;
+  onRequestSimilar: (product: PotteryProduct) => void;
   onAddToCart: (product: PotteryProduct, options?: { giftBox: boolean; inscription?: string }) => void;
   onReservePiece: (product: PotteryProduct, options?: { giftBox: boolean; inscription?: string }) => void;
   onToggleWishlist: (product: PotteryProduct) => void;
@@ -25,6 +29,7 @@ interface ProductDetailModalProps {
 export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   product,
   onClose,
+  onRequestSimilar,
   onAddToCart,
   onReservePiece,
   onToggleWishlist,
@@ -35,8 +40,46 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [inscription, setInscription] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [addedAnimation, setAddedAnimation] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  // Start fresh whenever a different piece is opened
+  useEffect(() => {
+    setSelectedImageIndex(0);
+    setQuantity(1);
+    setIncludeGiftBox(false);
+    setInscription('');
+    setLinkCopied(false);
+  }, [product?.id]);
+
+  // Escape closes the piece
+  useEffect(() => {
+    if (!product) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [product, onClose]);
 
   if (!product) return null;
+
+  const availability = getAvailability(product);
+  const capacity = formatCapacity(product);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: `${product.name} — CliffCooks`, url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      // Sharing was cancelled or is unavailable; the link stays in the address bar
+    }
+  };
 
   const handleAdd = () => {
     for (let i = 0; i < quantity; i++) {
@@ -76,12 +119,24 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-[#EFEAE1] text-[#5A4E44] border border-[#DDD1C0]">
                 {product.edition.batchCode}
               </span>
-              <span className="text-[11px] sm:text-xs font-mono text-[#8C7D70]">
-                #{String(product.edition.current).padStart(2, '0')} of {product.edition.total}
-              </span>
+              {availability.editionLabel && (
+                <span className="text-[11px] sm:text-xs text-[#8C7D70]">
+                  {availability.editionLabel}
+                </span>
+              )}
             </div>
 
             <div className="flex items-center gap-1.5 sm:gap-2">
+              <button
+                id="modal-share-btn"
+                onClick={handleShare}
+                aria-label="Share a link to this piece"
+                className="min-h-[40px] flex items-center gap-1.5 px-3 rounded-full bg-[#EFEAE1] hover:bg-[#E3D9CB] border border-[#DFD4C4] text-[#2C2723] text-xs font-medium transition-colors"
+              >
+                {linkCopied ? <Check className="w-4 h-4 text-[#4E7755]" /> : <Share2 className="w-4 h-4" />}
+                <span aria-live="polite">{linkCopied ? 'Link copied' : 'Share'}</span>
+              </button>
+
               <button
                 id="modal-wishlist-toggle"
                 onClick={() => onToggleWishlist(product)}
@@ -98,7 +153,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <button
                 id="modal-close-btn"
                 onClick={onClose}
-                aria-label="Close product modal"
+                aria-label="Close"
                 className="min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full bg-[#EFEAE1] hover:bg-[#E3D9CB] text-[#2C2723] transition-colors"
               >
                 <X className="w-5 h-5" />
@@ -139,20 +194,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     />
                   </picture>
                   <div className="absolute bottom-2.5 left-2.5 sm:bottom-3 sm:left-3 px-2.5 sm:px-3 py-1 rounded-full bg-[#2C2723]/80 backdrop-blur-md text-[#FAF7F2] text-[11px] sm:text-xs font-mono flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                    <span>{product.images[selectedImageIndex]?.name || 'Front View'}</span>
+                    <span>{product.images[selectedImageIndex]?.label || 'Front view'}</span>
                   </div>
-                </div>
-
-                {product.images[selectedImageIndex]?.gsUri && (
-                  <div className="px-3 py-1.5 rounded-lg bg-[#FAF7F2] border border-[#E0D5C5] text-[11px] font-mono text-[#665D52] flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 truncate">
-                      <span className="text-[#D97746] font-semibold">GS:</span>
-                      <span className="truncate">{product.images[selectedImageIndex]?.gsUri}</span>
+                  {availability.isSold && (
+                    <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 px-3 py-1 rounded-full bg-[#2C2723] text-[#FAF7F2] text-xs font-semibold">
+                      Sold
                     </div>
-                    <span className="text-[10px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 shrink-0">Live 200 OK</span>
-                  </div>
-                )}
+                  )}
+                </div>
 
                 {/* Thumbnails */}
                 <div className="grid grid-cols-4 gap-2">
@@ -186,20 +235,40 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   ))}
                 </div>
 
-                {/* Dimensions and Weight Matrix */}
-                <div className="p-3 sm:p-3.5 rounded-2xl bg-[#EFEAE1]/70 border border-[#DDD1C0] grid grid-cols-2 gap-2 text-xs">
+                {/* Size, weight and care */}
+                <dl className="p-3.5 rounded-2xl bg-[#EFEAE1]/70 border border-[#DDD1C0] grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5 text-xs">
                   <div>
-                    <span className="text-[10px] uppercase font-mono text-[#8C7D70] block">Dimensions</span>
-                    <span className="font-mono text-[#2C2723] font-medium">{product.dimensions.heightCm}cm H × {product.dimensions.diameterCm}cm ⌀</span>
+                    <dt className="text-[11px] text-[#8C7D70]">Size</dt>
+                    <dd className="text-[#2C2723] font-medium">{formatSize(product)}</dd>
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase font-mono text-[#8C7D70] block">Weight</span>
-                    <span className="font-mono text-[#2C2723] font-medium">{product.dimensions.weightGrams}g (Solid Vitrified)</span>
+                    <dt className="text-[11px] text-[#8C7D70]">Weight</dt>
+                    <dd className="text-[#2C2723] font-medium">{formatWeight(product)}</dd>
                   </div>
-                </div>
+                  {capacity && (
+                    <div>
+                      <dt className="text-[11px] text-[#8C7D70]">Holds</dt>
+                      <dd className="text-[#2C2723] font-medium">{capacity}</dd>
+                    </div>
+                  )}
+                </dl>
+
+                {product.careInstructions?.length > 0 && (
+                  <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#E3D9CB] text-xs">
+                    <h3 className="font-sans text-xs font-semibold text-[#2C2723] mb-1.5">Use and care</h3>
+                    <ul className="space-y-1 text-[#544A41]">
+                      {product.careInstructions.map((line) => (
+                        <li key={line} className="flex gap-2">
+                          <Check className="w-3.5 h-3.5 mt-0.5 text-[#4E7755] shrink-0" />
+                          <span>{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
 
-              {/* Right Column: Deep Craft Notes & Acquisition (Col 7-12) */}
+              {/* Right column: story and buying */}
               <div className="lg:col-span-6 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
@@ -223,8 +292,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <span className="font-serif text-2xl sm:text-3xl font-semibold text-[#2C2723]">
                       ${product.price}
                     </span>
-                    <span className="text-xs text-[#4E7755] font-medium">
-                      ✓ In Stock ({product.stockCount} Available)
+                    <span className={`text-xs font-semibold ${availability.isSold ? 'text-[#8C7D70]' : 'text-[#4E7755]'}`}>
+                      {availability.label}
                     </span>
                   </div>
 
@@ -237,7 +306,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   <div className="p-3.5 sm:p-4 rounded-2xl bg-[#F2EDE4] border border-[#E3D9CB] mb-3.5">
                     <div className="flex items-center gap-1.5 text-xs font-serif font-bold text-[#8B5A3E] mb-1">
                       <Sparkles className="w-3.5 h-3.5 text-[#C8623A]" />
-                      Artisan Studio Notes
+                      From the maker
                     </div>
                     <p className="text-xs text-[#5E5247] leading-relaxed italic">
                       "{product.artisanNotes}"
@@ -248,7 +317,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   <div className="grid grid-cols-2 gap-2.5 p-3 rounded-2xl bg-[#EFEAE1]/70 border border-[#DDD1C0] text-xs mb-3.5">
                     <div>
                       <span className="text-[10px] uppercase font-mono text-[#8C7D70] block">
-                        Clay Material
+                        Clay
                       </span>
                       <span className="text-xs text-[#2C2723] font-medium">
                         {product.clay}
@@ -256,7 +325,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     </div>
                     <div>
                       <span className="text-[10px] uppercase font-mono text-[#8C7D70] block">
-                        Glaze Chemistry
+                        Glaze
                       </span>
                       <span className="font-mono text-[11px] text-[#2C2723]">
                         {product.glazeFormulaSnippet}
@@ -267,7 +336,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   {/* Customization Options */}
                   <div className="space-y-3 mb-4 p-3.5 sm:p-4 rounded-2xl bg-[#FAF7F2] border border-[#E3D9CB]">
                     <span className="text-xs font-mono uppercase text-[#736558] block font-semibold">
-                      Complimentary Studio Services
+                      Free extras
                     </span>
                     
                     <label className="flex items-start gap-2.5 text-xs text-[#4A4036] cursor-pointer min-h-[44px]">
@@ -290,7 +359,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
                     <div className="pt-1">
                       <label className="block text-[11px] text-[#736558] mb-1">
-                        Optional Hand-Written Calligraphy Studio Note:
+                        Add a handwritten note (optional):
                       </label>
                       <input
                         type="text"
@@ -305,6 +374,21 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
 
                 {/* Purchase Bar */}
+                {availability.isSold ? (
+                  <div className="pt-3 border-t border-[#E8DFD3] shrink-0">
+                    <p className="text-xs text-[#544A41] mb-2.5">
+                      This piece has sold. Cliff can make something similar to order.
+                    </p>
+                    <button
+                      id="modal-request-similar-btn"
+                      onClick={() => onRequestSimilar(product)}
+                      className="w-full min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-[#2C2723] text-[#FAF7F2] hover:bg-[#3F3732] active:scale-95 text-xs font-semibold transition-all shadow-sm"
+                    >
+                      <PencilRuler className="w-4 h-4 text-[#E2B17B]" />
+                      <span>Request a similar piece</span>
+                    </button>
+                  </div>
+                ) : (
                 <div className="pt-3 border-t border-[#E8DFD3] flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 shrink-0">
                   <div className="flex items-center justify-between sm:justify-start gap-2">
                     <div className="flex items-center bg-[#EFEAE1] rounded-full p-1 border border-[#DDD1C0]">
@@ -357,9 +441,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     className="flex-1 min-h-[48px] flex items-center justify-center gap-2 py-3.5 px-4 sm:px-6 rounded-full bg-[#C8623A] text-white hover:bg-[#B3522C] active:scale-95 text-xs font-semibold uppercase tracking-wider transition-all shadow-md group"
                   >
                     <Bookmark className="w-4 h-4 text-white/90 group-hover:scale-110 transition-transform" />
-                    <span>Reserve Piece • ${(product.price * quantity)}</span>
+                    <span>Buy now • ${(product.price * quantity)}</span>
                   </button>
                 </div>
+                )}
 
               </div>
             </div>

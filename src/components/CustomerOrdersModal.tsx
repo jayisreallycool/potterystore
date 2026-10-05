@@ -45,10 +45,10 @@ export function CustomerOrdersModal({ isOpen, onClose }: CustomerOrdersModalProp
             </div>
             <div>
               <h3 className="font-serif text-xl font-semibold text-[#2C2723]">
-                Your Studio Acquisitions
+                Your orders
               </h3>
-              <p className="text-xs text-[#736558] font-mono">
-                Collector Registry • Kiln & Clay
+              <p className="text-xs text-[#736558]">
+                CliffCooks
               </p>
             </div>
           </div>
@@ -69,9 +69,9 @@ export function CustomerOrdersModal({ isOpen, onClose }: CustomerOrdersModalProp
                 <Package className="w-6 h-6" />
               </div>
               <div>
-                <h4 className="font-serif text-lg text-[#2C2723]">Sign In to View Orders</h4>
+                <h4 className="font-serif text-lg text-[#2C2723]">Sign in to see your orders</h4>
                 <p className="text-xs text-[#736558] max-w-sm mx-auto mt-1">
-                  Access your acquisition certificates, tracking information, and kiln dispatch milestones.
+                  See the pieces you've ordered and where each order is up to.
                 </p>
               </div>
               <button
@@ -81,19 +81,19 @@ export function CustomerOrdersModal({ isOpen, onClose }: CustomerOrdersModalProp
                 }}
                 className="px-6 py-2.5 rounded-full bg-[#D97746] text-white text-xs font-semibold hover:bg-[#C06536] transition-colors cursor-pointer"
               >
-                Sign In to Collector Account
+                Sign in
               </button>
             </div>
           ) : loading ? (
             <div className="py-12 text-center text-xs text-[#736558]">
               <div className="w-6 h-6 border-2 border-[#D97746] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-              <span>Querying studio registry archives...</span>
+              <span>Loading your orders…</span>
             </div>
           ) : orders.length === 0 ? (
             <div className="text-center py-12 space-y-2">
-              <p className="font-serif text-base text-[#2C2723]">No acquisitions recorded yet</p>
+              <p className="font-serif text-base text-[#2C2723]">No orders yet</p>
               <p className="text-xs text-[#736558]">
-                Pieces you reserve or acquire from our kiln collection will appear here.
+                Pieces you order will appear here.
               </p>
             </div>
           ) : (
@@ -145,7 +145,7 @@ export function CustomerOrdersModal({ isOpen, onClose }: CustomerOrdersModalProp
                   </div>
 
                   <div className="pt-2 border-t border-[#ECE5DA] flex items-center justify-between text-xs font-semibold text-[#2C2723]">
-                    <span>Total Paid (Freight Included)</span>
+                    <span>Order total (including shipping)</span>
                     <span className="font-serif text-sm">${order.total}</span>
                   </div>
                 </div>

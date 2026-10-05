@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           await setDoc(userDocRef, {
             userId: currentUser.uid,
             email: currentUser.email || '',
-            displayName: currentUser.displayName || currentUser.email?.split('@')[0] || 'Patron',
+            displayName: currentUser.displayName || currentUser.email?.split('@')[0] || 'Customer',
             photoURL: currentUser.photoURL || '',
             updatedAt: new Date().toISOString()
           }, { merge: true });

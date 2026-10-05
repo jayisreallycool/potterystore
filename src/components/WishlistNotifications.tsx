@@ -86,7 +86,7 @@ export const WishlistNotifications: React.FC<WishlistNotificationsProps> = ({
       {/* Floating Bell Icon */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-32 right-6 z-40 p-3 rounded-full bg-[#2C2723] text-[#FAF7F2] shadow-lg hover:shadow-xl transition-shadow group"
+        className="fixed bottom-28 right-6 z-40 p-3 rounded-full bg-[#2C2723] text-[#FAF7F2] shadow-lg hover:shadow-xl transition-shadow group"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         aria-label={unreadCount > 0 ? `${unreadCount} wishlist updates` : "Wishlist notifications"}
@@ -121,7 +121,7 @@ export const WishlistNotifications: React.FC<WishlistNotificationsProps> = ({
               initial={{ opacity: 0, x: 20, scale: 0.95 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, x: 20, scale: 0.95 }}
-              className="fixed bottom-56 right-6 z-40 w-80 bg-[#FAF7F2] rounded-2xl shadow-2xl border border-[#E3D9CB] overflow-hidden"
+              className="fixed bottom-52 right-6 z-40 w-80 bg-[#FAF7F2] rounded-2xl shadow-2xl border border-[#E3D9CB] overflow-hidden"
             >
               {/* Header */}
               <div className="px-4 py-3 border-b border-[#E3D9CB] flex items-center justify-between bg-[#EFEAE1]">

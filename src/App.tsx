@@ -22,6 +22,9 @@ import { ShippingReturns } from './components/ShippingReturns';
 import { ContactPage } from './components/ContactPage';
 import { AnalyticsDashboard } from './components/AnalyticsDashboard';
 import { WishlistNotifications } from './components/WishlistNotifications';
+import { FloatingCartWidget } from './components/FloatingCartWidget';
+import { CookieConsent } from './components/CookieConsent';
+import { EmailCaptureModal } from './components/EmailCaptureModal';
 import { navigate, piecePath, useRoute } from './utils/router';
 import { subscribeToProducts } from './services/storeService';
 import { updateSEOForProduct, updateSEOForPage } from './utils/seo';
@@ -463,6 +466,20 @@ export default function App() {
         isOpen={isAnalyticsOpen}
         onClose={() => setIsAnalyticsOpen(false)}
       />
+
+      {/* Floating Cart Widget - Bottom Right */}
+      <FloatingCartWidget
+        items={cart}
+        onOpenCart={() => setIsCartOpen(true)}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveFromCart}
+      />
+
+      {/* Cookie Consent Banner */}
+      <CookieConsent />
+
+      {/* Email Capture Modal */}
+      <EmailCaptureModal />
 
       {/* Vercel Web Analytics */}
       <Analytics />

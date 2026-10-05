@@ -20,6 +20,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { ceramicAudio } from '../utils/audio';
 import { useAuth } from '../context/AuthContext';
+import { Logo } from './Logo';
 
 interface NavbarProps {
   cartCount: number;
@@ -66,7 +67,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -79,14 +81,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleAudioToggle = () => {
@@ -107,30 +101,18 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className={`sticky top-0 z-40 transition-all duration-300 ${
-      isScrolled 
-        ? 'bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#E8E0D2] shadow-xs' 
-        : 'bg-[#FAF7F2] border-b border-transparent'
-    }`}>
-      {/* Top Kiln Batch Announcement Bar */}
-      <div className="bg-[#2B2622] text-[#EFEAE1] px-3 sm:px-4 py-1.5 text-xs flex items-center justify-between tracking-wider font-mono">
-        <div className="flex items-center gap-2 mx-auto sm:mx-0">
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#D97746]/20 text-[#E89369] font-medium text-[10px]">
-            <Flame className="w-3 h-3 animate-pulse" />
-            WOOD KILN BATCH UNLOCKED
-          </span>
-          <span className="hidden md:inline text-[#C4BAAE]">
-            Autumn Batch W-25 now available • Free studio crating $150+
-          </span>
-        </div>
-
-        <div className="hidden sm:flex items-center gap-4 text-[11px] text-[#A69B8E]">
-          <span>LIMITED ATELIER EDITIONS</span>
-          <span className="w-1 h-1 rounded-full bg-[#8E8274]"></span>
-          <span>SUSTAINABLE WOOD CRATES</span>
-        </div>
+    <>
+      {/* Announcement bar (scrolls away; only the header below is sticky) */}
+      <div className="bg-[#2B2622] text-[#E6DED2] px-4 py-2 text-xs text-center">
+        Autumn batch W-25 is available now
+        <span className="hidden sm:inline"> — free studio crating on orders over $150</span>
       </div>
 
+    <header className={`sticky top-0 z-40 transition-[background-color,box-shadow,border-color] duration-300 ${
+      isScrolled
+        ? 'bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#E8E0D2] shadow-xs'
+        : 'bg-[#FAF7F2] border-b border-transparent'
+    }`}>
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
@@ -147,69 +129,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             {/* Brand Logo */}
-            <button 
+            <button
               id="brand-logo-btn"
               onClick={() => {
                 onScrollToSection('hero-showcase');
                 ceramicAudio.playCeramicChime(480, 1.5);
               }}
-              className="text-left group focus:outline-none min-h-[44px] flex flex-col justify-center"
+              aria-label="CliffCooks home"
+              className="group text-left min-h-[44px] flex items-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B9552D] focus-visible:ring-offset-4 focus-visible:ring-offset-[#FAF7F2]"
             >
-              <div className="flex items-baseline gap-1.5 sm:gap-2">
-                <span className="font-serif text-lg sm:text-xl lg:text-2xl font-semibold tracking-tight text-[#2C2723] group-hover:text-[#C8623A] transition-colors">
-                  Cliff Cooks
-                </span>
-                <span className="text-[10px] sm:text-xs font-mono tracking-widest text-[#9E8E7E]">
-                  Pottery in the Kiln
-                </span>
-              </div>
-              <p className="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-[#8A7B6D] -mt-0.5 font-medium">
-                Small-Batch Ceramics & Craft
-              </p>
+              <Logo />
             </button>
           </div>
-
-          {/* Desktop Categories & About Link */}
-          <nav className="hidden lg:flex items-center gap-1">
-            <button
-              id="nav-about-btn"
-              onClick={() => {
-                onOpenAbout();
-                ceramicAudio.playSlideSound();
-              }}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
-                isAboutOpen
-                  ? 'bg-[#2C2723] text-[#FAF7F2] shadow-xs'
-                  : 'text-[#8C4624] hover:text-[#2C2723] hover:bg-[#EFEAE1] font-semibold'
-              }`}
-            >
-              About Me
-            </button>
-
-            <span className="w-px h-4 bg-[#D6CABE] mx-1"></span>
-
-            {navCategories.map((cat) => {
-              const isActive = !isAboutOpen && activeCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  id={`nav-category-${cat.id}`}
-                  onClick={() => {
-                    onSelectCategory(cat.id);
-                    onScrollToSection('hero-showcase');
-                    ceramicAudio.playSlideSound();
-                  }}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
-                    isActive
-                      ? 'bg-[#2C2723] text-[#FAF7F2] shadow-xs'
-                      : 'text-[#695E54] hover:text-[#2C2723] hover:bg-[#EFEAE1]'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              );
-            })}
-          </nav>
 
           {/* Actions & Utilities */}
           <div className="flex items-center gap-1 sm:gap-2">
@@ -279,7 +210,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
 
             {/* User Account / Auth Dropdown */}
-            <div className="relative" ref={userMenuRef}>
+            <div className="relative hidden sm:block" ref={userMenuRef}>
               {user ? (
                 <button
                   id="navbar-user-account-btn"
@@ -407,6 +338,48 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
+        {/* Desktop navigation row */}
+        <nav aria-label="Shop" className="hidden lg:flex items-center gap-7 border-t border-[#ECE5DA]">
+          {navCategories.map((cat) => {
+            const isActive = !isAboutOpen && activeCategory === cat.id;
+            return (
+              <button
+                key={cat.id}
+                id={`nav-category-${cat.id}`}
+                aria-current={isActive ? 'page' : undefined}
+                onClick={() => {
+                  onSelectCategory(cat.id);
+                  onScrollToSection('hero-showcase');
+                  ceramicAudio.playSlideSound();
+                }}
+                className={`relative px-1 py-3 text-[13px] font-medium transition-colors focus:outline-none focus-visible:text-[#B9552D] after:absolute after:left-1 after:right-1 after:bottom-1.5 after:h-[2px] after:rounded-full after:transition-transform after:duration-300 after:origin-left ${
+                  isActive
+                    ? 'text-[#2C2723] after:bg-[#B9552D] after:scale-x-100'
+                    : 'text-[#695E54] hover:text-[#2C2723] after:bg-[#D6CABE] after:scale-x-0 hover:after:scale-x-100'
+                }`}
+              >
+                {cat.label}
+              </button>
+            );
+          })}
+
+          <button
+            id="nav-about-btn"
+            aria-current={isAboutOpen ? 'page' : undefined}
+            onClick={() => {
+              onOpenAbout();
+              ceramicAudio.playSlideSound();
+            }}
+            className={`ml-auto relative px-1 py-3 text-[13px] font-medium transition-colors focus:outline-none focus-visible:text-[#B9552D] after:absolute after:left-1 after:right-1 after:bottom-1.5 after:h-[2px] after:rounded-full after:transition-transform after:duration-300 after:origin-left ${
+              isAboutOpen
+                ? 'text-[#2C2723] after:bg-[#B9552D] after:scale-x-100'
+                : 'text-[#695E54] hover:text-[#2C2723] after:bg-[#D6CABE] after:scale-x-0 hover:after:scale-x-100'
+            }`}
+          >
+            About Cliff
+          </button>
+        </nav>
+
         {/* Mobile Horizontal Quick-Category Scroll Strip */}
         <div className="lg:hidden flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-2.5 pt-0.5 border-t border-[#ECE5DA]/60">
           {navCategories.map((cat) => {
@@ -459,7 +432,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 >
                   <span className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-[#D97746]" />
-                    <span>About Me • Cliff Cooks</span>
+                    <span>About Cliff</span>
                   </span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
@@ -612,5 +585,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
       </AnimatePresence>
     </header>
+    </>
   );
 };

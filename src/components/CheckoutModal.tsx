@@ -287,7 +287,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   </div>
                   <p className="text-[#5A4E44]"><strong>Dispatched to:</strong> {formData.address}, {formData.city}</p>
                   <p className="text-[#5A4E44]"><strong>Tracking Link:</strong> Sent to {formData.email}</p>
-                  <p className="text-[#5A4E44]"><strong>Kiln Master Stamp:</strong> Signed by Clifford (Cliff Cooks)</p>
+                  <p className="text-[#5A4E44]"><strong>Kiln Master Stamp:</strong> Signed by Clifford (CliffCooks)</p>
                 </div>
 
                 <button

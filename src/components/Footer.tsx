@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Check, Shield, Compass, Heart, ArrowUp, Sparkles } from 'lucide-react';
+import { Logo } from './Logo';
 import { ceramicAudio } from '../utils/audio';
 
 interface FooterProps {
@@ -73,13 +74,8 @@ export const Footer: React.FC<FooterProps> = ({ onReplayIntro, onOpenAdminConsol
           
           {/* Brand Info */}
           <div>
-            <div className="flex items-baseline gap-2 mb-3">
-              <span className="font-serif text-xl font-semibold text-[#FAF7F2]">
-                Cliff Cooks
-              </span>
-              <span className="font-mono text-[10px] text-[#A69B8E]">
-                Pottery in the Kiln
-              </span>
+            <div className="mb-4">
+              <Logo tone="dark" />
             </div>
             <p className="text-[#A69B8E] leading-relaxed mb-4">
               Small-batch ceramics brand inspired by the connection between food, craft, and everyday ritual founded by Clifford.
@@ -135,7 +131,7 @@ export const Footer: React.FC<FooterProps> = ({ onReplayIntro, onOpenAdminConsol
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#8A7B6D]">
-          <p>© 2026 Cliff Cooks: Pottery in the Kiln. All masterworks registered under studio archive.</p>
+          <p>© 2026 CliffCooks. All masterworks registered under studio archive.</p>
           
           <div className="flex items-center gap-6">
             {onOpenAdminConsole && (

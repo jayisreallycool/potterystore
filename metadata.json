@@ -1,6 +1,6 @@
 {
-  "name": "Cliff Cooks: Pottery in the Kiln",
-  "description": "Cliff Cooks: Pottery in the Kiln is a small-batch ceramics brand inspired by the connection between food, craft, and everyday ritual founded by Clifford.",
+  "name": "CliffCooks: Pottery in the Kiln",
+  "description": "CliffCooks: Pottery in the Kiln is a small-batch ceramics brand inspired by the connection between food, craft, and everyday ritual founded by Clifford.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

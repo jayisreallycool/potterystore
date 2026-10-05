@@ -36,6 +36,7 @@ export const FloatingCartWidget: React.FC<FloatingCartWidgetProps> = ({
         className="fixed bottom-8 right-8 z-30 w-16 h-16 rounded-full bg-[#C8623A] hover:bg-[#B3522C] shadow-lg flex items-center justify-center transition-all"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
+        aria-label={itemCount > 0 ? `Open cart with ${itemCount} item${itemCount !== 1 ? 's' : ''}` : "Open cart"}
       >
         <ShoppingBag className="w-7 h-7 text-white" />
 
@@ -72,6 +73,7 @@ export const FloatingCartWidget: React.FC<FloatingCartWidgetProps> = ({
                 <button
                   onClick={() => setIsExpanded(false)}
                   className="p-1 rounded-full hover:bg-[#E3D9CB] transition-colors"
+                  aria-label="Close cart preview"
                 >
                   <X className="w-4 h-4 text-[#2C2723]" />
                 </button>
@@ -115,6 +117,7 @@ export const FloatingCartWidget: React.FC<FloatingCartWidgetProps> = ({
                           <button
                             onClick={() => onUpdateQuantity(item.product.id, item.quantity - 1)}
                             className="p-1 rounded hover:bg-[#D9CEBE] transition-colors"
+                            aria-label={`Decrease quantity for ${item.product.name}`}
                           >
                             <Minus className="w-3 h-3 text-[#544A41]" />
                           </button>
@@ -124,12 +127,14 @@ export const FloatingCartWidget: React.FC<FloatingCartWidgetProps> = ({
                           <button
                             onClick={() => onUpdateQuantity(item.product.id, item.quantity + 1)}
                             className="p-1 rounded hover:bg-[#D9CEBE] transition-colors"
+                            aria-label={`Increase quantity for ${item.product.name}`}
                           >
                             <Plus className="w-3 h-3 text-[#544A41]" />
                           </button>
                           <button
                             onClick={() => onRemoveItem(item.product.id)}
                             className="ml-auto p-1 rounded hover:bg-[#F0A59A]/20 transition-colors"
+                            aria-label={`Remove ${item.product.name} from cart`}
                           >
                             <Trash2 className="w-3 h-3 text-[#8B3E18]" />
                           </button>

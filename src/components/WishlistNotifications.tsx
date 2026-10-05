@@ -89,7 +89,7 @@ export const WishlistNotifications: React.FC<WishlistNotificationsProps> = ({
         className="fixed bottom-24 right-6 z-40 p-3 rounded-full bg-[#2C2723] text-[#FAF7F2] shadow-lg hover:shadow-xl transition-shadow group"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
-        aria-label="Wishlist notifications"
+        aria-label={unreadCount > 0 ? `${unreadCount} wishlist updates` : "Wishlist notifications"}
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
@@ -131,6 +131,7 @@ export const WishlistNotifications: React.FC<WishlistNotificationsProps> = ({
                 <button
                   onClick={() => setIsOpen(false)}
                   className="p-1 hover:bg-[#E3D9CB] rounded-full transition-colors"
+                  aria-label="Close wishlist updates"
                 >
                   <X className="w-4 h-4 text-[#2C2723]" />
                 </button>
@@ -181,6 +182,7 @@ export const WishlistNotifications: React.FC<WishlistNotificationsProps> = ({
                           <button
                             onClick={() => handleDismiss(notif.id)}
                             className="text-[#8A7B6D] hover:text-[#2C2723] transition-colors shrink-0"
+                            aria-label={`Dismiss notification for ${notif.productName}`}
                           >
                             <X className="w-4 h-4" />
                           </button>

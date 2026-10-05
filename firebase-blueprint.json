@@ -1,0 +1,203 @@
+{
+  "entities": {
+    "Admin": {
+      "title": "Admin",
+      "description": "Administrator record for role verification",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Email address of the administrator"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when admin was registered"
+        }
+      },
+      "required": ["email", "createdAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile document",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["customer", "admin"],
+          "description": "Role of the user"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp of account creation"
+        }
+      },
+      "required": ["userId", "email", "createdAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Artisanal ceramic pottery product in the studio catalog",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique product identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the pottery piece"
+        },
+        "subtitle": {
+          "type": "string",
+          "description": "Short descriptive subtitle"
+        },
+        "price": {
+          "type": "number",
+          "description": "Price in USD"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["vessels", "tableware", "planters", "tea-ritual", "sculptural"],
+          "description": "Product category"
+        },
+        "clay": {
+          "type": "string",
+          "description": "Clay body used"
+        },
+        "firing": {
+          "type": "string",
+          "description": "Firing method"
+        },
+        "glaze": {
+          "type": "string",
+          "description": "Glaze finish"
+        },
+        "inStock": {
+          "type": "boolean",
+          "description": "Whether the piece is currently in stock"
+        },
+        "stockCount": {
+          "type": "number",
+          "description": "Number of available pieces"
+        },
+        "isFeatured": {
+          "type": "boolean",
+          "description": "Featured status on showcase"
+        },
+        "description": {
+          "type": "string",
+          "description": "Full poetic and tactile product description"
+        }
+      },
+      "required": ["id", "name", "price", "category", "clay", "firing", "glaze", "inStock"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase or reservation order",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique order identifier"
+        },
+        "userId": {
+          "type": "string",
+          "description": "UID of the purchasing user or 'guest'"
+        },
+        "customerName": {
+          "type": "string",
+          "description": "Full name of the purchaser"
+        },
+        "customerEmail": {
+          "type": "string",
+          "description": "Contact email for order updates"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "firing_in_progress", "dispatched", "delivered", "cancelled"],
+          "description": "Fulfillment status of the artisanal pottery piece"
+        },
+        "total": {
+          "type": "number",
+          "description": "Total order amount in USD"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Order creation timestamp"
+        }
+      },
+      "required": ["id", "userId", "customerName", "customerEmail", "status", "total", "createdAt"]
+    },
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "Direct studio inquiry or bespoke commission request",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique inquiry identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Client name"
+        },
+        "email": {
+          "type": "string",
+          "description": "Client email"
+        },
+        "message": {
+          "type": "string",
+          "description": "Inquiry message content"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Submission timestamp"
+        }
+      },
+      "required": ["id", "name", "email", "message", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/admins/{adminId}": {
+      "schema": {
+        "$ref": "#/entities/Admin"
+      },
+      "description": "Stores administrator authorization documents"
+    },
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Stores customer user accounts and profiles"
+    },
+    "/products/{productId}": {
+      "schema": {
+        "$ref": "#/entities/Product"
+      },
+      "description": "Artisanal pottery product catalog documents"
+    },
+    "/orders/{orderId}": {
+      "schema": {
+        "$ref": "#/entities/Order"
+      },
+      "description": "Customer purchase orders and bespoke reservations"
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": {
+        "$ref": "#/entities/Inquiry"
+      },
+      "description": "Studio consultation and bespoke inquiries"
+    }
+  }
+}

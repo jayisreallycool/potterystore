@@ -1,0 +1,112 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Master Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened Primitives
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+    function incoming() {
+      return request.resource.data;
+    }
+    function existing() {
+      return resource.data;
+    }
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isSignedIn() && (
+        (request.auth.token.email == 'buddhacmd02@gmail.com' && request.auth.token.email_verified == true) ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Product Validator Helper
+    function isValidProduct(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.name is string && data.name.size() <= 200
+        && data.price is number && data.price >= 0 && data.price <= 100000
+        && data.category is string && data.category in ['vessels', 'tableware', 'planters', 'tea-ritual', 'sculptural']
+        && data.clay is string && data.clay.size() <= 100
+        && data.firing is string && data.firing.size() <= 100
+        && data.glaze is string && data.glaze.size() <= 100
+        && data.inStock is bool;
+    }
+
+    // Order Validator Helper
+    function isValidOrder(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.userId is string && data.userId.size() <= 128
+        && data.customerName is string && data.customerName.size() <= 200
+        && data.customerEmail is string && data.customerEmail.size() <= 200
+        && data.status in ['pending', 'firing_in_progress', 'dispatched', 'delivered', 'cancelled']
+        && data.total is number && data.total >= 0 && data.total <= 1000000;
+    }
+
+    // Inquiry Validator Helper
+    function isValidInquiry(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.name is string && data.name.size() <= 200
+        && data.email is string && data.email.size() <= 200
+        && data.message is string && data.message.size() <= 5000;
+    }
+
+    // Admins collection
+    match /admins/{adminId} {
+      allow get: if isValidId(adminId) && isSignedIn() && (request.auth.uid == adminId || isAdmin());
+      allow list: if isAdmin();
+      allow write: if isValidId(adminId) && isAdmin();
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow get: if isValidId(userId) && (isOwner(userId) || isAdmin());
+      allow list: if isAdmin();
+      allow create: if isValidId(userId) && isOwner(userId) && (!('role' in incoming()) || incoming().role == 'customer');
+      allow update: if isValidId(userId) && (
+        (isOwner(userId) && incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'shippingAddress', 'phone', 'updatedAt']))
+        || isAdmin()
+      );
+      allow delete: if isValidId(userId) && isAdmin();
+    }
+
+    // Products collection (public catalog, admin managed)
+    match /products/{productId} {
+      allow get: if isValidId(productId);
+      allow list: if true;
+      allow create: if isValidId(productId) && isAdmin() && isValidProduct(incoming());
+      allow update: if isValidId(productId) && isAdmin() && isValidProduct(incoming());
+      allow delete: if isValidId(productId) && isAdmin();
+    }
+
+    // Orders collection (customers view their own, admins view and update all)
+    match /orders/{orderId} {
+      allow get: if isValidId(orderId) && (isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid));
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isValidId(orderId) && isValidOrder(incoming()) && (
+        (isSignedIn() && incoming().userId == request.auth.uid) ||
+        (!isSignedIn() && incoming().userId == 'guest')
+      );
+      allow update: if isValidId(orderId) && isAdmin() && isValidOrder(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt', 'notes'])
+      );
+      allow delete: if isValidId(orderId) && isAdmin();
+    }
+
+    // Inquiries collection (public submission, admin read/manage)
+    match /inquiries/{inquiryId} {
+      allow get: if isValidId(inquiryId) && isAdmin();
+      allow list: if isAdmin();
+      allow create: if isValidId(inquiryId) && isValidInquiry(incoming());
+      allow update, delete: if isValidId(inquiryId) && isAdmin();
+    }
+  }
+}

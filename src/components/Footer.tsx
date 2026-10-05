@@ -109,50 +109,49 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Footer Navigation Columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-12 border-b border-[#3B3530] text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-5 gap-6 sm:gap-4 pb-8 border-b border-[#3B3530]">
 
           {/* Brand Info */}
-          <div>
-            <div className="mb-4">
+          <div className="sm:col-span-2">
+            <div className="mb-3">
               <Logo tone="dark" />
             </div>
-            <p className="text-[#A69B8E] leading-relaxed">
+            <p className="text-[10px] sm:text-xs text-[#A69B8E] leading-relaxed">
               Small-batch handmade ceramics by Clifford.
             </p>
           </div>
 
           {/* Shop */}
           <div>
-            <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-3 font-semibold">
+            <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-2 font-semibold text-[10px]">
               Shop
             </h4>
-            <ul className="space-y-2 text-[#C4BAAE]">
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">All pieces</a></li>
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Vessels & Vases</a></li>
+            <ul className="space-y-1.5 text-[#C4BAAE] text-[10px]">
+              <li><a href="#hero-showcase" className="hover:text-white transition-colors">All</a></li>
+              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Vessels</a></li>
               <li><a href="#hero-showcase" className="hover:text-white transition-colors">Tableware</a></li>
               <li><a href="#hero-showcase" className="hover:text-white transition-colors">Tea & Ritual</a></li>
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Planters</a></li>
             </ul>
           </div>
 
           {/* Help & Service */}
           <div>
-            <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-3 font-semibold">
+            <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-2 font-semibold text-[10px]">
               Help
             </h4>
-            <ul className="space-y-2 text-[#C4BAAE]">
+            <ul className="space-y-1.5 text-[#C4BAAE] text-[10px]">
               <li>
-                <button onClick={onOpenShipping} className="hover:text-white underline underline-offset-2 transition-colors">
-                  Shipping & Returns
+                <button onClick={onOpenShipping} className="hover:text-white transition-colors text-left">
+                  Shipping
                 </button>
               </li>
               <li>
-                <button onClick={onOpenContact} className="hover:text-white underline underline-offset-2 transition-colors">
-                  Contact Us
+                <button onClick={onOpenContact} className="hover:text-white transition-colors text-left">
+                  Contact
                 </button>
               </li>
               <li>
-                <button onClick={onOpenCommissions} className="hover:text-white underline underline-offset-2 transition-colors">
+                <button onClick={onOpenCommissions} className="hover:text-white transition-colors text-left">
                   Custom Orders
                 </button>
               </li>
@@ -161,18 +160,18 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Legal */}
           <div>
-            <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-3 font-semibold">
+            <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-2 font-semibold text-[10px]">
               Legal
             </h4>
-            <ul className="space-y-2 text-[#C4BAAE]">
+            <ul className="space-y-1.5 text-[#C4BAAE] text-[10px]">
               <li>
-                <button onClick={onOpenTerms} className="hover:text-white underline underline-offset-2 transition-colors">
-                  Terms of Service
+                <button onClick={onOpenTerms} className="hover:text-white transition-colors text-left">
+                  Terms
                 </button>
               </li>
               <li>
-                <button onClick={onOpenPrivacy} className="hover:text-white underline underline-offset-2 transition-colors">
-                  Privacy Policy
+                <button onClick={onOpenPrivacy} className="hover:text-white transition-colors text-left">
+                  Privacy
                 </button>
               </li>
             </ul>
@@ -181,61 +180,61 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Social Media Section */}
-        <div className="py-12 border-b border-[#3B3530]">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8">
+        <div className="py-8 border-b border-[#3B3530]">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
             <div className="text-center sm:text-left">
-              <p className="text-xs font-mono uppercase text-[#E2B17B] tracking-wider mb-2 font-semibold">
-                Follow the Studio
+              <p className="text-[10px] font-mono uppercase text-[#E2B17B] tracking-wider mb-1 font-semibold">
+                Follow
               </p>
-              <p className="text-sm text-[#A69B8E] max-w-sm">
-                See what's coming next and join our community of ceramic collectors.
+              <p className="text-[11px] text-[#A69B8E] max-w-sm leading-snug">
+                Join our community of ceramic collectors.
               </p>
             </div>
 
             {/* Social Media Links */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4">
               {/* Instagram */}
               <motion.a
                 href="https://instagram.com/cliffcooks"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-[#E4405F] via-[#D92E7F] to-[#9B36B7] hover:shadow-lg transition-all"
+                className="group flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-[#E4405F] via-[#D92E7F] to-[#9B36B7] hover:shadow-lg transition-all"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Cliff Cooks on Instagram"
                 title="Follow us on Instagram"
               >
-                <Instagram className="w-5 h-5 text-white" />
+                <Instagram className="w-4 h-4 text-white" />
               </motion.a>
 
-              {/* Pinterest - using a custom SVG since Lucide doesn't have Pinterest */}
+              {/* Pinterest */}
               <motion.a
                 href="https://pinterest.com/cliffcooks"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center w-12 h-12 rounded-full bg-[#E60023] hover:shadow-lg transition-all"
+                className="group flex items-center justify-center w-10 h-10 rounded-full bg-[#E60023] hover:shadow-lg transition-all"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Cliff Cooks on Pinterest"
                 title="Follow us on Pinterest"
               >
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.15.015.405 0 .405-.405v-3.338c-2.45.6-2.927-1.244-2.927-1.244-.12-.612-.465-1.644-.465-1.644-.405-2.7 1.095-3.37 1.095-3.37.9-.615 2.22-.42 2.22-.42.465 0 1.404.165 1.404-.405v-3.12c0-.12.015-.255.135-.405-.12 0-1.2-.12-1.98-.12-2.7 0-3.264 2.176-3.264 2.176-.6 1.488.165 2.31.165 2.31.465 1.494 1.665 1.215 2.16 1.215h.165v-2.73c-.12 0-.93-.075-1.215-.165-1.29-.33-2.265-1.494-2.265-2.88 0-2.16 1.665-3.915 3.915-3.915 2.25 0 3.915 1.755 3.915 3.915 0 1.386-.975 2.55-2.265 2.88-.285.09-1.095.165-1.215.165v2.73c.495 0 1.695.27 2.16-1.215.6-1.494 1.755-2.31 1.755-2.31 1.26-1.11 2.16-2.415 2.16-3.915 0-3.57-2.895-6.465-6.465-6.465-3.57 0-6.465 2.895-6.465 6.465 0 1.5.9 2.805 2.16 3.915.6 1.494 1.755 2.31 1.755 2.31.465 1.485 1.665 1.215 2.16 1.215v-2.73c-.12 0-.93-.075-1.215-.165-1.29-.33-2.265-1.494-2.265-2.88 0-2.16 1.665-3.915 3.915-3.915z"/>
                 </svg>
               </motion.a>
 
-              {/* Facebook - using Lucide approximation */}
+              {/* Facebook */}
               <motion.a
                 href="https://facebook.com/cliffcooks"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center w-12 h-12 rounded-full bg-[#1877F2] hover:shadow-lg transition-all"
+                className="group flex items-center justify-center w-10 h-10 rounded-full bg-[#1877F2] hover:shadow-lg transition-all"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Cliff Cooks on Facebook"
                 title="Follow us on Facebook"
               >
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
               </motion.a>
@@ -245,27 +244,27 @@ export const Footer: React.FC<FooterProps> = ({
                 href="https://tiktok.com/@cliffcooks"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center w-12 h-12 rounded-full bg-[#000000] hover:shadow-lg transition-all border border-[#25F4EE]"
+                className="group flex items-center justify-center w-10 h-10 rounded-full bg-[#000000] hover:shadow-lg transition-all border border-[#25F4EE]"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Cliff Cooks on TikTok"
                 title="Follow us on TikTok"
               >
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.1 1.82 2.89 2.89 0 0 1 5.1-1.82V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 5.07 2.41 6.3 6.3 0 0 0 5.44-10.66l-.02-.02v-.02a4.82 4.82 0 0 0 3.8-4.82v-.5a7.4 7.4 0 0 1-.43-.20z"/>
                 </svg>
               </motion.a>
 
-              {/* Email Newsletter */}
+              {/* Email */}
               <motion.a
                 href="mailto:hello@cliffcooks.studio"
-                className="group flex items-center justify-center w-12 h-12 rounded-full bg-[#8B4513] hover:bg-[#A0522D] hover:shadow-lg transition-all"
+                className="group flex items-center justify-center w-10 h-10 rounded-full bg-[#8B4513] hover:bg-[#A0522D] hover:shadow-lg transition-all"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Email Cliff Cooks"
                 title="Email us"
               >
-                <Mail className="w-5 h-5 text-white" />
+                <Mail className="w-4 h-4 text-white" />
               </motion.a>
             </div>
           </div>

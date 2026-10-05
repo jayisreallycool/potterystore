@@ -128,6 +128,7 @@ export const generateOrganizationSchema = (baseUrl: string = 'https://cliffcooks
     legalName: 'Cliff Cooks Ceramics',
     url: baseUrl,
     logo: `${baseUrl}/logo.svg`,
+    image: `${baseUrl}/uploads/clifford-ceramic-artist-portrait.webp`,
     sameAs: [
       'https://instagram.com/cliffcooks',
       'https://www.instagram.com/cliffcooks'
@@ -142,7 +143,9 @@ export const generateOrganizationSchema = (baseUrl: string = 'https://cliffcooks
     description: 'Small-batch handmade ceramics by Clifford. One-of-a-kind ceramic pieces including vessels, tableware, and planters.',
     founder: {
       '@type': 'Person',
-      name: 'Clifford'
+      name: 'Clifford',
+      image: `${baseUrl}/uploads/clifford-ceramic-artist-portrait.webp`,
+      jobTitle: 'Ceramic Artist & Founder'
     },
     address: {
       '@type': 'PostalAddress',

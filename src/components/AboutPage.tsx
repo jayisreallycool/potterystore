@@ -35,17 +35,26 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onExploreCollection }) => 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* Image Showcase */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-6 relative"
           >
-            <div className="relative aspect-3/4 rounded-3xl overflow-hidden shadow-xl border border-[#E0D5C5] bg-[#EAE2D5]">
+            <div className="relative aspect-[600/1300] rounded-3xl overflow-hidden shadow-xl border border-[#E0D5C5] bg-[#EAE2D5]">
               <img
-                src="/uploads/about-portrait.webp"
-                alt="Clifford at an outdoor market with a handmade green-glazed pitcher"
+                srcSet="
+                  /uploads/clifford-ceramic-artist-portrait-480w.webp 480w,
+                  /uploads/clifford-ceramic-artist-portrait-768w.webp 768w,
+                  /uploads/clifford-ceramic-artist-portrait.webp 1200w
+                "
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 50vw"
+                src="/uploads/clifford-ceramic-artist-portrait.webp"
+                alt="Clifford, ceramic artist and founder of Cliff Cooks, standing in his pottery studio with handmade ceramic bowls and dishware on display tables"
+                title="Clifford - Ceramic Artist and Studio Founder"
                 className="w-full h-full object-cover object-top"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-[#2C2723]/80 backdrop-blur-md text-[#FAF7F2] space-y-1">

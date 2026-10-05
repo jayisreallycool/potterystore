@@ -108,73 +108,79 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
         </div>
 
-        {/* Footer Navigation Columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-5 gap-6 sm:gap-4 pb-8 border-b border-[#3B3530]">
+        {/* Footer Navigation - Squared 4-Section Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 pb-12 border-b border-[#3B3530]">
 
-          {/* Brand Info */}
-          <div className="sm:col-span-2">
-            <div className="mb-3">
-              <Logo tone="dark" />
+          {/* LEFT HALF */}
+          <div className="space-y-8">
+            {/* Brand Info */}
+            <div>
+              <div className="mb-4">
+                <Logo tone="dark" />
+              </div>
+              <p className="text-[10px] text-[#A69B8E] leading-relaxed max-w-xs">
+                Small-batch handmade ceramics by Clifford.
+              </p>
             </div>
-            <p className="text-[10px] sm:text-xs text-[#A69B8E] leading-relaxed">
-              Small-batch handmade ceramics by Clifford.
-            </p>
+
+            {/* Shop */}
+            <div>
+              <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-3 font-semibold text-[10px]">
+                Shop
+              </h4>
+              <ul className="space-y-2 text-[#C4BAAE] text-[10px]">
+                <li><a href="#hero-showcase" className="hover:text-white transition-colors">All</a></li>
+                <li><a href="#hero-showcase" className="hover:text-white transition-colors">Vessels</a></li>
+                <li><a href="#hero-showcase" className="hover:text-white transition-colors">Tableware</a></li>
+                <li><a href="#hero-showcase" className="hover:text-white transition-colors">Tea & Ritual</a></li>
+              </ul>
+            </div>
           </div>
 
-          {/* Shop */}
-          <div>
-            <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-2 font-semibold text-[10px]">
-              Shop
-            </h4>
-            <ul className="space-y-1.5 text-[#C4BAAE] text-[10px]">
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">All</a></li>
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Vessels</a></li>
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Tableware</a></li>
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Tea & Ritual</a></li>
-            </ul>
-          </div>
+          {/* RIGHT HALF */}
+          <div className="space-y-8">
+            {/* Help & Service */}
+            <div>
+              <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-3 font-semibold text-[10px]">
+                Help
+              </h4>
+              <ul className="space-y-2 text-[#C4BAAE] text-[10px]">
+                <li>
+                  <button onClick={onOpenShipping} className="hover:text-white transition-colors text-left">
+                    Shipping
+                  </button>
+                </li>
+                <li>
+                  <button onClick={onOpenContact} className="hover:text-white transition-colors text-left">
+                    Contact
+                  </button>
+                </li>
+                <li>
+                  <button onClick={onOpenCommissions} className="hover:text-white transition-colors text-left">
+                    Custom Orders
+                  </button>
+                </li>
+              </ul>
+            </div>
 
-          {/* Help & Service */}
-          <div>
-            <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-2 font-semibold text-[10px]">
-              Help
-            </h4>
-            <ul className="space-y-1.5 text-[#C4BAAE] text-[10px]">
-              <li>
-                <button onClick={onOpenShipping} className="hover:text-white transition-colors text-left">
-                  Shipping
-                </button>
-              </li>
-              <li>
-                <button onClick={onOpenContact} className="hover:text-white transition-colors text-left">
-                  Contact
-                </button>
-              </li>
-              <li>
-                <button onClick={onOpenCommissions} className="hover:text-white transition-colors text-left">
-                  Custom Orders
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-2 font-semibold text-[10px]">
-              Legal
-            </h4>
-            <ul className="space-y-1.5 text-[#C4BAAE] text-[10px]">
-              <li>
-                <button onClick={onOpenTerms} className="hover:text-white transition-colors text-left">
-                  Terms
-                </button>
-              </li>
-              <li>
-                <button onClick={onOpenPrivacy} className="hover:text-white transition-colors text-left">
-                  Privacy
-                </button>
-              </li>
-            </ul>
+            {/* Legal */}
+            <div>
+              <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-3 font-semibold text-[10px]">
+                Legal
+              </h4>
+              <ul className="space-y-2 text-[#C4BAAE] text-[10px]">
+                <li>
+                  <button onClick={onOpenTerms} className="hover:text-white transition-colors text-left">
+                    Terms
+                  </button>
+                </li>
+                <li>
+                  <button onClick={onOpenPrivacy} className="hover:text-white transition-colors text-left">
+                    Privacy
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
 
         </div>

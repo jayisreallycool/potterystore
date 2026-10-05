@@ -39,6 +39,10 @@ interface NavbarProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   onScrollToSection: (id: string) => void;
+  onOpenPrivacy?: () => void;
+  onOpenTerms?: () => void;
+  onOpenShipping?: () => void;
+  onOpenContact?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -57,7 +61,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectCategory,
   searchQuery,
   onSearchChange,
-  onScrollToSection
+  onScrollToSection,
+  onOpenPrivacy,
+  onOpenTerms,
+  onOpenShipping,
+  onOpenContact
 }) => {
   const { user, isAdmin, openAuthModal, logOut } = useAuth();
   const [isMuted, setIsMuted] = useState(ceramicAudio.getIsMuted());
@@ -615,6 +623,57 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {!isMuted ? <Volume2 className="w-3.5 h-3.5 text-[#E2B17B]" /> : <VolumeX className="w-3.5 h-3.5" />}
                   <span>{!isMuted ? 'Audio On' : 'Muted'}</span>
                 </button>
+              </div>
+
+              {/* Legal & Help Links */}
+              <div className="pt-2 border-t border-[#E8DFD3]">
+                <span className="text-xs text-[#8C7D70] block mb-2 font-semibold">Help & Legal</span>
+                <div className="space-y-1.5">
+                  {onOpenContact && (
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        onOpenContact();
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#EFEAE1] text-xs text-[#4A4036] transition-colors"
+                    >
+                      Contact Us
+                    </button>
+                  )}
+                  {onOpenShipping && (
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        onOpenShipping();
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#EFEAE1] text-xs text-[#4A4036] transition-colors"
+                    >
+                      Shipping & Returns
+                    </button>
+                  )}
+                  {onOpenTerms && (
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        onOpenTerms();
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#EFEAE1] text-xs text-[#4A4036] transition-colors"
+                    >
+                      Terms of Service
+                    </button>
+                  )}
+                  {onOpenPrivacy && (
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        onOpenPrivacy();
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#EFEAE1] text-xs text-[#4A4036] transition-colors"
+                    >
+                      Privacy Policy
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </motion.div>

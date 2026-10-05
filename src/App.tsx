@@ -16,6 +16,10 @@ import { AdminConsole } from './components/AdminConsole';
 import { CustomerOrdersModal } from './components/CustomerOrdersModal';
 import { AboutPage } from './components/AboutPage';
 import { CommissionPage } from './components/CommissionPage';
+import { PrivacyPolicy } from './components/PrivacyPolicy';
+import { TermsOfService } from './components/TermsOfService';
+import { ShippingReturns } from './components/ShippingReturns';
+import { ContactPage } from './components/ContactPage';
 import { navigate, piecePath, useRoute } from './utils/router';
 import { subscribeToProducts } from './services/storeService';
 import { updateSEOForProduct, updateSEOForPage } from './utils/seo';
@@ -107,6 +111,12 @@ export default function App() {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [introKey, setIntroKey] = useState(0);
+
+  // Legal pages
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
+  const [isShippingOpen, setIsShippingOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   // Filter state
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
@@ -289,6 +299,10 @@ export default function App() {
         searchQuery={filters.searchQuery}
         onSearchChange={handleSearchChange}
         onScrollToSection={handleScrollToSection}
+        onOpenPrivacy={() => setIsPrivacyOpen(true)}
+        onOpenTerms={() => setIsTermsOpen(true)}
+        onOpenShipping={() => setIsShippingOpen(true)}
+        onOpenContact={() => setIsContactOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -323,10 +337,14 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <Footer 
+      <Footer
         onReplayIntro={() => setIntroKey((k) => k + 1)}
         onOpenCommissions={() => openCommissions(null)}
         onOpenAdminConsole={() => setIsAdminConsoleOpen(true)}
+        onOpenPrivacy={() => setIsPrivacyOpen(true)}
+        onOpenTerms={() => setIsTermsOpen(true)}
+        onOpenShipping={() => setIsShippingOpen(true)}
+        onOpenContact={() => setIsContactOpen(true)}
       />
 
       {/* Shutter Opening Page Intro */}
@@ -406,6 +424,24 @@ export default function App() {
       <CustomerOrdersModal
         isOpen={isCustomerOrdersOpen}
         onClose={() => setIsCustomerOrdersOpen(false)}
+      />
+
+      {/* Legal Pages */}
+      <PrivacyPolicy
+        isOpen={isPrivacyOpen}
+        onClose={() => setIsPrivacyOpen(false)}
+      />
+      <TermsOfService
+        isOpen={isTermsOpen}
+        onClose={() => setIsTermsOpen(false)}
+      />
+      <ShippingReturns
+        isOpen={isShippingOpen}
+        onClose={() => setIsShippingOpen(false)}
+      />
+      <ContactPage
+        isOpen={isContactOpen}
+        onClose={() => setIsContactOpen(false)}
       />
 
       {/* Vercel Web Analytics */}

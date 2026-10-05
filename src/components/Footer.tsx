@@ -8,9 +8,21 @@ interface FooterProps {
   onReplayIntro?: () => void;
   onOpenAdminConsole?: () => void;
   onOpenCommissions?: () => void;
+  onOpenPrivacy?: () => void;
+  onOpenTerms?: () => void;
+  onOpenShipping?: () => void;
+  onOpenContact?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onReplayIntro, onOpenAdminConsole, onOpenCommissions }) => {
+export const Footer: React.FC<FooterProps> = ({
+  onReplayIntro,
+  onOpenAdminConsole,
+  onOpenCommissions,
+  onOpenPrivacy,
+  onOpenTerms,
+  onOpenShipping,
+  onOpenContact
+}) => {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(false);
@@ -97,64 +109,72 @@ export const Footer: React.FC<FooterProps> = ({ onReplayIntro, onOpenAdminConsol
 
         {/* Footer Navigation Columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-12 border-b border-[#3B3530] text-xs">
-          
+
           {/* Brand Info */}
           <div>
             <div className="mb-4">
               <Logo tone="dark" />
             </div>
-            <p className="text-[#A69B8E] leading-relaxed mb-4">
-              Small-batch ceramics brand inspired by the connection between food, craft, and everyday ritual founded by Clifford.
-            </p>
-            <p className="text-[11px] font-mono text-[#E2B17B]">
-              Small-Batch Kiln Fired • Bowls, Plates, Vases, Mugs
+            <p className="text-[#A69B8E] leading-relaxed">
+              Small-batch handmade ceramics by Clifford.
             </p>
           </div>
 
-          {/* Collections */}
+          {/* Shop */}
           <div>
             <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-3 font-semibold">
-              Collections
+              Shop
             </h4>
             <ul className="space-y-2 text-[#C4BAAE]">
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Vessels & Solitary Moon Vases</a></li>
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Matcha Chawan & Tea Ware</a></li>
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Celadon Nesting Dining Sets</a></li>
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Fluted Terracotta Planters</a></li>
-              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Sculptural Enso Forms</a></li>
+              <li><a href="#hero-showcase" className="hover:text-white transition-colors">All pieces</a></li>
+              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Vessels & Vases</a></li>
+              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Tableware</a></li>
+              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Tea & Ritual</a></li>
+              <li><a href="#hero-showcase" className="hover:text-white transition-colors">Planters</a></li>
             </ul>
           </div>
 
-          {/* Craft Care & Integrity */}
+          {/* Help & Service */}
           <div>
             <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-3 font-semibold">
-              Ceramic Care
+              Help
             </h4>
             <ul className="space-y-2 text-[#C4BAAE]">
-              <li>Cone 10 Vitrification Guide</li>
-              <li>Natural Ash Patina Aging</li>
-              <li>Wabi-sabi Restoration (Kintsugi)</li>
-              <li>Breakage-Free Crate Guarantee</li>
+              <li>
+                <button onClick={onOpenShipping} className="hover:text-white underline underline-offset-2 transition-colors">
+                  Shipping & Returns
+                </button>
+              </li>
+              <li>
+                <button onClick={onOpenContact} className="hover:text-white underline underline-offset-2 transition-colors">
+                  Contact Us
+                </button>
+              </li>
               <li>
                 <button onClick={onOpenCommissions} className="hover:text-white underline underline-offset-2 transition-colors">
-                  Custom orders
+                  Custom Orders
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Workshop & Hours */}
+          {/* Legal */}
           <div>
             <h4 className="font-mono uppercase text-[#E2B17B] tracking-wider mb-3 font-semibold">
-              Studio visits
+              Legal
             </h4>
-            <p className="text-[#C4BAAE] leading-relaxed mb-2">
-              Studio visits and tactile inspections by private appointment Thursday through Sunday.
-            </p>
-            <p className="font-mono text-[#8C7D70] text-[11px]">
-              atelier@kilnandclay.studio<br />
-              +1 (845) 555-KILN
-            </p>
+            <ul className="space-y-2 text-[#C4BAAE]">
+              <li>
+                <button onClick={onOpenTerms} className="hover:text-white underline underline-offset-2 transition-colors">
+                  Terms of Service
+                </button>
+              </li>
+              <li>
+                <button onClick={onOpenPrivacy} className="hover:text-white underline underline-offset-2 transition-colors">
+                  Privacy Policy
+                </button>
+              </li>
+            </ul>
           </div>
 
         </div>

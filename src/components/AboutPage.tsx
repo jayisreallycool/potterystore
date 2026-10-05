@@ -44,7 +44,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onExploreCollection }) => 
             <div className="relative aspect-3/4 rounded-3xl overflow-hidden shadow-xl border border-[#E0D5C5] bg-[#EAE2D5]">
               <img
                 src="/uploads/about-portrait.webp"
-                alt="Clifford in the pottery studio holding a handmade glazed cup"
+                alt="Clifford at an outdoor market with a handmade green-glazed pitcher"
                 className="w-full h-full object-cover object-top"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>

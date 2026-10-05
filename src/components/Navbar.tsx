@@ -7,9 +7,8 @@ import {
   Sparkles, 
   Flame, 
   Search, 
-  Menu, 
-  X, 
-  Compass, 
+  Menu,
+  X,
   ArrowRight,
   ShieldCheck,
   User as UserIcon,
@@ -27,7 +26,6 @@ interface NavbarProps {
   wishlistCount: number;
   onOpenCart: () => void;
   onOpenWishlist: () => void;
-  onOpenScaleVisualizer: () => void;
   onOpenAdminConsole: () => void;
   onOpenCustomerOrders: () => void;
   onOpenAbout: () => void;
@@ -50,7 +48,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   wishlistCount,
   onOpenCart,
   onOpenWishlist,
-  onOpenScaleVisualizer,
   onOpenAdminConsole,
   onOpenCustomerOrders,
   onOpenAbout,
@@ -592,20 +589,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </button>
                   </div>
                 )}
-              </div>
-
-              {/* Special Features Quick Links */}
-              <div className="pt-2 border-t border-[#E8DFD3]">
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    onOpenScaleVisualizer();
-                  }}
-                  className="w-full min-h-[44px] p-3 rounded-xl bg-[#EFEAE1] text-[#2C2723] flex items-center gap-3 text-xs font-medium"
-                >
-                  <Compass className="w-4 h-4 text-[#C8623A]" />
-                  <span>See pieces to scale</span>
-                </button>
               </div>
 
               {/* Acoustic Sound Setting */}

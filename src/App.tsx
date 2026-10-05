@@ -5,7 +5,6 @@ import { PotteryProduct, CartItem, FilterState, ProductCategory } from './types'
 import { Navbar } from './components/Navbar';
 import { ShowcaseHero } from './components/ShowcaseHero';
 import { ProductDetailModal } from './components/ProductDetailModal';
-import { RoomScaleVisualizer } from './components/RoomScaleVisualizer';
 import { CartDrawer } from './components/CartDrawer';
 import { WishlistDrawer } from './components/WishlistDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
@@ -57,7 +56,6 @@ export default function App() {
 
   // Showcase state
   const [activeProductIndex, setActiveProductIndex] = useState(0);
-  const [isScaleVisualizerOpen, setIsScaleVisualizerOpen] = useState(false);
   const [isAdminConsoleOpen, setIsAdminConsoleOpen] = useState(false);
   const [isCustomerOrdersOpen, setIsCustomerOrdersOpen] = useState(false);
 
@@ -149,7 +147,7 @@ export default function App() {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Avoid hijacking inputs
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) return;
-      if (detailedProduct || isCheckoutOpen || isScaleVisualizerOpen || isAdminConsoleOpen || isCustomerOrdersOpen) return;
+      if (detailedProduct || isCheckoutOpen || isAdminConsoleOpen || isCustomerOrdersOpen) return;
 
       if (e.key === 'ArrowRight') {
         setActiveProductIndex((prev) => (prev + 1) % products.length);
@@ -159,7 +157,7 @@ export default function App() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [detailedProduct, isCheckoutOpen, isScaleVisualizerOpen, isAdminConsoleOpen, isCustomerOrdersOpen, products.length]);
+  }, [detailedProduct, isCheckoutOpen, isAdminConsoleOpen, isCustomerOrdersOpen, products.length]);
 
   // Dynamic SEO metadata & JSON-LD updates
   useEffect(() => {
@@ -289,7 +287,6 @@ export default function App() {
         wishlistCount={wishlist.length}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenWishlist={() => setIsWishlistOpen(true)}
-        onOpenScaleVisualizer={() => setIsScaleVisualizerOpen(true)}
         onOpenAdminConsole={() => setIsAdminConsoleOpen(true)}
         onOpenCustomerOrders={() => setIsCustomerOrdersOpen(true)}
         onOpenAbout={() => {
@@ -365,18 +362,6 @@ export default function App() {
         onReservePiece={handleReservePiece}
         onToggleWishlist={handleToggleWishlist}
         isWishlisted={detailedProduct ? isWishlisted(detailedProduct.id) : false}
-      />
-
-      {/* Room Scale Comparator Modal */}
-      <RoomScaleVisualizer
-        isOpen={isScaleVisualizerOpen}
-        onClose={() => setIsScaleVisualizerOpen(false)}
-        products={products}
-        selectedProduct={products[activeProductIndex] || products[0]}
-        onSelectProduct={(p) => {
-          const idx = products.findIndex((item) => item.id === p.id);
-          if (idx !== -1) setActiveProductIndex(idx);
-        }}
       />
 
       {/* Cart Drawer */}

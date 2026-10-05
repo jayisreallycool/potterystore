@@ -41,11 +41,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onExploreCollection }) => 
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-6 relative"
           >
-            <div className="relative aspect-4/3 sm:aspect-square rounded-3xl overflow-hidden shadow-xl border border-[#E0D5C5] bg-[#EAE2D5]">
+            <div className="relative aspect-3/4 rounded-3xl overflow-hidden shadow-xl border border-[#E0D5C5] bg-[#EAE2D5]">
               <img
-                src="/uploads/IMG_2640.webp"
-                alt="Cliff Cooks handcrafted pottery in the kiln"
-                className="w-full h-full object-cover"
+                src="/uploads/about-portrait.webp"
+                alt="Clifford in the pottery studio holding a handmade glazed cup"
+                className="w-full h-full object-cover object-top"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-[#2C2723]/80 backdrop-blur-md text-[#FAF7F2] space-y-1">

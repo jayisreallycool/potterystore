@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  X, 
-  ShoppingBag, 
-  Heart, 
-  Flame, 
-  Sparkles, 
-  Check, 
+import {
+  X,
+  ShoppingBag,
+  Heart,
+  Flame,
+  Sparkles,
+  Check,
   Gift,
   Bookmark,
   Share2,
@@ -15,9 +15,13 @@ import {
 import { PotteryProduct } from '../types';
 import { ceramicAudio } from '../utils/audio';
 import { getAvailability, formatSize, formatWeight, formatCapacity } from '../utils/availability';
+import { InventoryBadge, LastOneAlert } from './InventoryBadge';
+import { SimilarPiecesCarousel } from './SimilarPiecesCarousel';
+import { generateProductSchema, injectSchema, updateSEOMetadata } from '../utils/enhancedSEO';
 
 interface ProductDetailModalProps {
   product: PotteryProduct | null;
+  allProducts?: PotteryProduct[];
   onClose: () => void;
   onRequestSimilar: (product: PotteryProduct) => void;
   onAddToCart: (product: PotteryProduct, options?: { giftBox: boolean; inscription?: string }) => void;
@@ -28,6 +32,7 @@ interface ProductDetailModalProps {
 
 export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   product,
+  allProducts = [],
   onClose,
   onRequestSimilar,
   onAddToCart,
@@ -48,6 +53,22 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     setInscription('');
     setLinkCopied(false);
   }, [product?.id]);
+
+  // Update SEO metadata and schema for the product
+  useEffect(() => {
+    if (!product) return;
+
+    // Update meta tags
+    updateSEOMetadata(
+      `${product.name} — CliffCooks Ceramics`,
+      product.subtitle || product.description,
+      product.images[0]?.url
+    );
+
+    // Inject product schema for SEO and social sharing
+    const schema = generateProductSchema(product);
+    injectSchema(schema, 'product-schema');
+  }, [product]);
 
   // Escape closes the piece
   useEffect(() => {
@@ -288,10 +309,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <span className="font-serif text-2xl sm:text-3xl font-semibold text-[#2C2723]">
                       ${product.price}
                     </span>
-                    <span className={`text-xs font-semibold ${availability.isSold ? 'text-[#8C7D70]' : 'text-[#4E7755]'}`}>
-                      {availability.label}
-                    </span>
+                    <InventoryBadge product={product} size="md" />
                   </div>
+
+                  {/* Last One Alert */}
+                  <LastOneAlert product={product} />
 
                   {/* Craft Description */}
                   <p className="text-xs sm:text-sm text-[#544A41] leading-relaxed mb-3.5">
@@ -422,6 +444,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
               </div>
             </div>
+
+            {/* Similar Pieces Carousel - Below Main Content */}
+            {allProducts.length > 1 && (
+              <div className="mt-8 pt-8 border-t border-[#E3D9CB]">
+                <SimilarPiecesCarousel
+                  currentProduct={product}
+                  allProducts={allProducts}
+                  onSelectProduct={(selectedProduct) => {
+                    // Product will update via parent component when route changes
+                    ceramicAudio.playSlideSound();
+                  }}
+                />
+              </div>
+            )}
           </div>
         </motion.div>
       </div>

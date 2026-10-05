@@ -20,6 +20,8 @@ import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { TermsOfService } from './components/TermsOfService';
 import { ShippingReturns } from './components/ShippingReturns';
 import { ContactPage } from './components/ContactPage';
+import { AnalyticsDashboard } from './components/AnalyticsDashboard';
+import { WishlistNotifications } from './components/WishlistNotifications';
 import { navigate, piecePath, useRoute } from './utils/router';
 import { subscribeToProducts } from './services/storeService';
 import { updateSEOForProduct, updateSEOForPage } from './utils/seo';
@@ -111,6 +113,7 @@ export default function App() {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [introKey, setIntroKey] = useState(0);
+  const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
 
   // Legal pages
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
@@ -353,6 +356,7 @@ export default function App() {
       {/* Product Detail Modal */}
       <ProductDetailModal
         product={detailedProduct}
+        allProducts={products}
         onClose={closeProductDetail}
         onRequestSimilar={(p) => openCommissions(p)}
         onAddToCart={handleAddToCart}
@@ -442,6 +446,22 @@ export default function App() {
       <ContactPage
         isOpen={isContactOpen}
         onClose={() => setIsContactOpen(false)}
+      />
+
+      {/* Wishlist Notifications System */}
+      <WishlistNotifications
+        wishlistProductIds={wishlist}
+        allProducts={products}
+        onNotificationAction={(productId) => {
+          const product = products.find((p) => p.id === productId);
+          if (product) openProductDetail(product);
+        }}
+      />
+
+      {/* Analytics Dashboard */}
+      <AnalyticsDashboard
+        isOpen={isAnalyticsOpen}
+        onClose={() => setIsAnalyticsOpen(false)}
       />
 
       {/* Vercel Web Analytics */}

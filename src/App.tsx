@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { POTTERY_PRODUCTS } from './data/potteryData';
 import { PotteryProduct, CartItem, FilterState, ProductCategory } from './types';
 import { Navbar } from './components/Navbar';
@@ -406,6 +407,9 @@ export default function App() {
         isOpen={isCustomerOrdersOpen}
         onClose={() => setIsCustomerOrdersOpen(false)}
       />
+
+      {/* Vercel Web Analytics */}
+      <Analytics />
     </div>
   );
 }

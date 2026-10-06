@@ -107,7 +107,6 @@ export const ProductFiltersPanel: React.FC<ProductFiltersPanelProps> = ({
         overflow-y-auto
         transform transition-transform duration-300 z-40
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        lg:sticky lg:top-24
       `}>
         {/* Header */}
         <div className="sticky top-0 bg-[#24201D] border-b border-[#3B3530] p-4 lg:p-6">

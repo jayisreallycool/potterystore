@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  ShoppingBag, 
-  Heart, 
-  Maximize2, 
-  Sun, 
-  Moon, 
-  Layers, 
-  Sparkles, 
-  Check, 
-  Flame, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  ShoppingBag,
+  Heart,
+  Maximize2,
+  Sun,
+  Moon,
+  Layers,
+  Sparkles,
+  Check,
+  Flame,
   ArrowUpRight,
   Hand,
   Bookmark,
-  ShieldCheck
+  ShieldCheck,
+  Sliders
 } from 'lucide-react';
 import { PotteryProduct } from '../types';
 import { ceramicAudio } from '../utils/audio';
@@ -30,6 +31,7 @@ interface ShowcaseHeroProps {
   onToggleWishlist: (product: PotteryProduct) => void;
   isWishlisted: (id: string) => boolean;
   onOpenProductDetail: (product: PotteryProduct) => void;
+  onOpenFilters?: () => void;
 }
 
 export const ShowcaseHero: React.FC<ShowcaseHeroProps> = ({
@@ -40,7 +42,8 @@ export const ShowcaseHero: React.FC<ShowcaseHeroProps> = ({
   onReservePiece,
   onToggleWishlist,
   isWishlisted,
-  onOpenProductDetail
+  onOpenProductDetail,
+  onOpenFilters
 }) => {
   const currentProduct = products[activeProductIndex] || products[0];
 
@@ -224,6 +227,16 @@ export const ShowcaseHero: React.FC<ShowcaseHeroProps> = ({
             <span className="text-[11px] sm:text-xs font-mono text-[#8C7D70]">
               ITEM <span className="font-semibold text-[#2C2723]">{String(activeProductIndex + 1).padStart(2, '0')}</span> / {String(products.length).padStart(2, '0')}
             </span>
+            {onOpenFilters && (
+              <button
+                onClick={onOpenFilters}
+                title="Open filters"
+                className="lg:hidden ml-auto flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#EFEAE1] border border-[#E0D5C5] text-[11px] sm:text-xs font-mono text-[#5A4E44] hover:text-[#2C2723] transition-colors"
+              >
+                <Sliders className="w-3.5 h-3.5" />
+                <span>Filters</span>
+              </button>
+            )}
           </div>
 
           {/* Quick Slider Controls & Autoplay */}

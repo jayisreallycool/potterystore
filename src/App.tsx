@@ -7,6 +7,7 @@ import { ProductDetailModal } from './components/ProductDetailModal';
 import { CartDrawer } from './components/CartDrawer';
 import { WishlistDrawer } from './components/WishlistDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
+import { ProductFiltersPanel } from './components/ProductFiltersPanel';
 import { Footer } from './components/Footer';
 import { ShutterIntro } from './components/ShutterIntro';
 import { AuthModal } from './components/AuthModal';
@@ -112,6 +113,7 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [introKey, setIntroKey] = useState(0);
   const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
 
@@ -272,6 +274,67 @@ export default function App() {
     });
   };
 
+  // Apply filters to products
+  const filteredProducts = products.filter((p) => {
+    // Category filter
+    if (filters.category !== 'all' && p.category !== filters.category) return false;
+
+    // Price range filter
+    if (p.price < filters.minPrice || p.price > filters.maxPrice) return false;
+
+    // Clay filter (multiple selection)
+    if (filters.clay) {
+      const selectedClays = filters.clay.split(',');
+      if (!selectedClays.includes(p.clay)) return false;
+    }
+
+    // Firing filter (multiple selection)
+    if (filters.firing) {
+      const selectedFirings = filters.firing.split(',');
+      if (!selectedFirings.includes(p.firing)) return false;
+    }
+
+    // Glaze filter (multiple selection)
+    if (filters.glaze) {
+      const selectedGlazes = filters.glaze.split(',');
+      if (!selectedGlazes.includes(p.glaze)) return false;
+    }
+
+    // Stock filter
+    if (filters.inStockOnly && p.stock === 0) return false;
+
+    // Search filter
+    if (filters.searchQuery) {
+      const q = filters.searchQuery.toLowerCase();
+      if (!p.name.toLowerCase().includes(q) &&
+          !p.clay.toLowerCase().includes(q) &&
+          !p.glaze.toLowerCase().includes(q) &&
+          !p.subtitle.toLowerCase().includes(q)) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  // Sort filtered products
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    switch (filters.sortBy) {
+      case 'price-asc':
+        return a.price - b.price;
+      case 'price-desc':
+        return b.price - a.price;
+      case 'batch-newest':
+        return new Date(b.batchDate || 0).getTime() - new Date(a.batchDate || 0).getTime();
+      case 'featured':
+      default:
+        return 0;
+    }
+  });
+
+  // Use filtered products for showcase, fallback to all if none match
+  const displayProducts = sortedProducts.length > 0 ? sortedProducts : products;
+
   // Checkout totals
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const shippingCost = subtotal >= 150 || subtotal === 0 ? 0 : 18;
@@ -324,16 +387,30 @@ export default function App() {
             }}
           />
         ) : (
-          <ShowcaseHero
-            products={products}
-            activeProductIndex={activeProductIndex}
-            onSelectProductIndex={setActiveProductIndex}
-            onAddToCart={handleAddToCart}
-            onReservePiece={handleReservePiece}
-            onToggleWishlist={handleToggleWishlist}
-            isWishlisted={isWishlisted}
-            onOpenProductDetail={openProductDetail}
-          />
+          <div className="flex lg:gap-0">
+            {/* Filters Sidebar (desktop) + Toggle (mobile) */}
+            <ProductFiltersPanel
+              filters={filters}
+              onFiltersChange={setFilters}
+              isOpen={isFiltersOpen}
+              onClose={() => setIsFiltersOpen(false)}
+            />
+
+            {/* Main Showcase */}
+            <div className="flex-1">
+              <ShowcaseHero
+                products={displayProducts}
+                activeProductIndex={Math.min(activeProductIndex, displayProducts.length - 1)}
+                onSelectProductIndex={setActiveProductIndex}
+                onAddToCart={handleAddToCart}
+                onReservePiece={handleReservePiece}
+                onToggleWishlist={handleToggleWishlist}
+                isWishlisted={isWishlisted}
+                onOpenProductDetail={openProductDetail}
+                onOpenFilters={() => setIsFiltersOpen(true)}
+              />
+            </div>
+          </div>
         )}
       </main>
 

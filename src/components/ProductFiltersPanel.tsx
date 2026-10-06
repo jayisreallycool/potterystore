@@ -17,10 +17,6 @@ const CATEGORIES: { value: ProductCategory | 'all'; label: string }[] = [
   { value: 'ritual', label: 'Tea & Ritual' }
 ];
 
-const CLAYS = ['Earthenware', 'Stoneware', 'Porcelain'];
-const FIRINGS = ['Cone 6', 'Cone 10', 'High Fire', 'Raku'];
-const GLAZES = ['Glossy', 'Matte', 'Speckled', 'Ash', 'Unglazed'];
-
 const SORT_OPTIONS = [
   { value: 'featured', label: 'Featured' },
   { value: 'price-asc', label: 'Price: Low to High' },
@@ -38,7 +34,6 @@ export const ProductFiltersPanel: React.FC<ProductFiltersPanelProps> = ({
     category: true,
     sort: true,
     price: true,
-    materials: true,
     availability: true
   });
 
@@ -59,30 +54,6 @@ export const ProductFiltersPanel: React.FC<ProductFiltersPanelProps> = ({
 
   const handlePriceChange = (field: 'minPrice' | 'maxPrice', value: number) => {
     onFiltersChange({ ...filters, [field]: value });
-  };
-
-  const handleClayToggle = (clay: string) => {
-    const current = filters.clay ? filters.clay.split(',') : [];
-    const updated = current.includes(clay)
-      ? current.filter(c => c !== clay)
-      : [...current, clay];
-    onFiltersChange({ ...filters, clay: updated.join(',') });
-  };
-
-  const handleFiringToggle = (firing: string) => {
-    const current = filters.firing ? filters.firing.split(',') : [];
-    const updated = current.includes(firing)
-      ? current.filter(f => f !== firing)
-      : [...current, firing];
-    onFiltersChange({ ...filters, firing: updated.join(',') });
-  };
-
-  const handleGlazeToggle = (glaze: string) => {
-    const current = filters.glaze ? filters.glaze.split(',') : [];
-    const updated = current.includes(glaze)
-      ? current.filter(g => g !== glaze)
-      : [...current, glaze];
-    onFiltersChange({ ...filters, glaze: updated.join(',') });
   };
 
   const handleInStockToggle = () => {
@@ -307,90 +278,6 @@ export const ProductFiltersPanel: React.FC<ProductFiltersPanelProps> = ({
             </AnimatePresence>
           </div>
 
-          {/* Materials */}
-          <div>
-            <button
-              onClick={() => toggleSection('materials')}
-              className="w-full flex items-center justify-between text-[#FAF7F2] font-semibold mb-3 hover:text-[#E2B17B] transition-colors"
-            >
-              <span className="text-sm">Materials</span>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform ${
-                  expandedSections.materials ? 'rotate-180' : ''
-                }`}
-              />
-            </button>
-            <AnimatePresence>
-              {expandedSections.materials && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="overflow-hidden space-y-4"
-                >
-                  {/* Clay */}
-                  <div>
-                    <p className="text-xs font-mono text-[#E2B17B] mb-2">Clay</p>
-                    <div className="space-y-1.5">
-                      {CLAYS.map(clay => (
-                        <label key={clay} className="flex items-center gap-2 cursor-pointer group">
-                          <input
-                            type="checkbox"
-                            checked={filters.clay.includes(clay)}
-                            onChange={() => handleClayToggle(clay)}
-                            className="w-4 h-4 rounded accent-[#E2B17B]"
-                          />
-                          <span className="text-xs text-[#C4BAAE] group-hover:text-[#FAF7F2] transition-colors">
-                            {clay}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Firing */}
-                  <div>
-                    <p className="text-xs font-mono text-[#E2B17B] mb-2">Firing</p>
-                    <div className="space-y-1.5">
-                      {FIRINGS.map(firing => (
-                        <label key={firing} className="flex items-center gap-2 cursor-pointer group">
-                          <input
-                            type="checkbox"
-                            checked={filters.firing.includes(firing)}
-                            onChange={() => handleFiringToggle(firing)}
-                            className="w-4 h-4 rounded accent-[#E2B17B]"
-                          />
-                          <span className="text-xs text-[#C4BAAE] group-hover:text-[#FAF7F2] transition-colors">
-                            {firing}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Glaze */}
-                  <div>
-                    <p className="text-xs font-mono text-[#E2B17B] mb-2">Glaze</p>
-                    <div className="space-y-1.5">
-                      {GLAZES.map(glaze => (
-                        <label key={glaze} className="flex items-center gap-2 cursor-pointer group">
-                          <input
-                            type="checkbox"
-                            checked={filters.glaze.includes(glaze)}
-                            onChange={() => handleGlazeToggle(glaze)}
-                            className="w-4 h-4 rounded accent-[#E2B17B]"
-                          />
-                          <span className="text-xs text-[#C4BAAE] group-hover:text-[#FAF7F2] transition-colors">
-                            {glaze}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
 
           {/* Availability */}
           <div>

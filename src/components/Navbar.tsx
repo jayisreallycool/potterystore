@@ -325,8 +325,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               </AnimatePresence>
             </div>
 
-            {/* Login/Register Button */}
-            {!user && (
+            {/* Login/Register Button or Cart */}
+            {!user ? (
               <button
                 id="navbar-login-btn"
                 onClick={() => openAuthModal('signin')}
@@ -336,27 +336,26 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <UserIcon className="w-4 h-4 text-[#E2B17B] shrink-0" />
                 <span className="hidden sm:inline">Login</span>
               </button>
+            ) : (
+              <button
+                id="navbar-cart-btn"
+                onClick={onOpenCart}
+                aria-label="Open cart"
+                className="min-h-[44px] flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full bg-[#2C2723] text-[#FAF7F2] hover:bg-[#3F3732] active:scale-95 transition-all shadow-xs"
+              >
+                <ShoppingBag className="w-4 h-4 text-[#E2B17B] shrink-0" />
+                <span className="text-xs font-semibold tracking-wide">
+                  {cartCount > 0 ? (
+                    <>
+                      <span className="sm:hidden">{cartCount}</span>
+                      <span className="hidden sm:inline">{cartCount} Piece{cartCount > 1 ? 's' : ''}</span>
+                    </>
+                  ) : (
+                    <span className="hidden xs:inline">Bag</span>
+                  )}
+                </span>
+              </button>
             )}
-
-            {/* Cart Drawer Trigger */}
-            <button
-              id="navbar-cart-btn"
-              onClick={onOpenCart}
-              aria-label="Open cart"
-              className="min-h-[44px] flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full bg-[#2C2723] text-[#FAF7F2] hover:bg-[#3F3732] active:scale-95 transition-all shadow-xs"
-            >
-              <ShoppingBag className="w-4 h-4 text-[#E2B17B] shrink-0" />
-              <span className="text-xs font-semibold tracking-wide">
-                {cartCount > 0 ? (
-                  <>
-                    <span className="sm:hidden">{cartCount}</span>
-                    <span className="hidden sm:inline">{cartCount} Piece{cartCount > 1 ? 's' : ''}</span>
-                  </>
-                ) : (
-                  <span className="hidden xs:inline">Bag</span>
-                )}
-              </span>
-            </button>
           </div>
         </div>
 

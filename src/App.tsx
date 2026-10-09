@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { POTTERY_PRODUCTS } from './data/potteryData';
-import { PotteryProduct, CartItem, FilterState, ProductCategory } from './types';
+import { PotteryProduct, CartItem, FilterState, ProductCategory, OrderRecord, InquiryRecord } from './types';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { ShowcaseHero } from './components/ShowcaseHero';
@@ -13,6 +13,7 @@ import { Footer } from './components/Footer';
 import { ShutterIntro } from './components/ShutterIntro';
 import { AuthModal } from './components/AuthModal';
 import { AdminConsole } from './components/AdminConsole';
+import { AdminConsoleExtended } from './components/AdminConsoleExtended';
 import { CustomerOrdersModal } from './components/CustomerOrdersModal';
 import { AboutPage } from './components/AboutPage';
 import { CommissionPage } from './components/CommissionPage';
@@ -27,7 +28,7 @@ import { FloatingCartWidget } from './components/FloatingCartWidget';
 import { CookieConsent } from './components/CookieConsent';
 import { EmailCaptureModal } from './components/EmailCaptureModal';
 import { navigate, piecePath, useRoute } from './utils/router';
-import { subscribeToProducts } from './services/storeService';
+import { subscribeToProducts, subscribeToAllOrders, subscribeToInquiries } from './services/storeService';
 import { updateSEOForProduct, updateSEOForPage } from './utils/seo';
 
 const INITIAL_FILTERS: FilterState = {
@@ -60,6 +61,28 @@ export default function App() {
   const [activeProductIndex, setActiveProductIndex] = useState(0);
   const [isAdminConsoleOpen, setIsAdminConsoleOpen] = useState(false);
   const [isCustomerOrdersOpen, setIsCustomerOrdersOpen] = useState(false);
+
+  // Admin data state
+  const [orders, setOrders] = useState<OrderRecord[]>([]);
+  const [inquiries, setInquiries] = useState<InquiryRecord[]>([]);
+
+  // Subscribe to orders and inquiries when admin console is open
+  useEffect(() => {
+    if (!isAdminConsoleOpen) return;
+
+    const unsubOrders = subscribeToAllOrders((allOrders) => {
+      setOrders(allOrders);
+    });
+
+    const unsubInquiries = subscribeToInquiries((allInquiries) => {
+      setInquiries(allInquiries);
+    });
+
+    return () => {
+      unsubOrders();
+      unsubInquiries();
+    };
+  }, [isAdminConsoleOpen]);
 
   // The address bar decides which page or piece is showing, so every piece has a shareable link
   const route = useRoute();
@@ -496,11 +519,12 @@ export default function App() {
       <AuthModal />
 
       {/* Studio Admin Console */}
-      <AdminConsole
+      <AdminConsoleExtended
         isOpen={isAdminConsoleOpen}
         onClose={() => setIsAdminConsoleOpen(false)}
         products={products}
-        onProductUpdated={() => {}}
+        orders={orders}
+        inquiries={inquiries}
       />
 
       {/* Customer orders */}

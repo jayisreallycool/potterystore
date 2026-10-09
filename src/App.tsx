@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { POTTERY_PRODUCTS } from './data/potteryData';
 import { PotteryProduct, CartItem, FilterState, ProductCategory } from './types';
 import { Navbar } from './components/Navbar';
+import { HeroSection } from './components/HeroSection';
 import { ShowcaseHero } from './components/ShowcaseHero';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { CartDrawer } from './components/CartDrawer';
@@ -387,18 +388,27 @@ export default function App() {
             }}
           />
         ) : (
-          <div className="flex lg:gap-0">
-            {/* Filters Sidebar (desktop) + Toggle (mobile) */}
-            <ProductFiltersPanel
-              filters={filters}
-              onFiltersChange={setFilters}
-              isOpen={isFiltersOpen}
-              onClose={() => setIsFiltersOpen(false)}
+          <>
+            {/* Hero Section */}
+            <HeroSection
+              onBrowseCollection={() => {
+                window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+              }}
+              onViewCommissions={() => openCommissions(null)}
             />
 
-            {/* Main Showcase */}
-            <div className="flex-1">
-              <ShowcaseHero
+            <div className="flex lg:gap-0">
+              {/* Filters Sidebar (desktop) + Toggle (mobile) */}
+              <ProductFiltersPanel
+                filters={filters}
+                onFiltersChange={setFilters}
+                isOpen={isFiltersOpen}
+                onClose={() => setIsFiltersOpen(false)}
+              />
+
+              {/* Main Showcase */}
+              <div className="flex-1">
+                <ShowcaseHero
                 products={displayProducts}
                 activeProductIndex={Math.min(activeProductIndex, displayProducts.length - 1)}
                 onSelectProductIndex={setActiveProductIndex}
@@ -409,8 +419,9 @@ export default function App() {
                 onOpenProductDetail={openProductDetail}
                 onOpenFilters={() => setIsFiltersOpen(true)}
               />
+              </div>
             </div>
-          </div>
+          </>
         )}
       </main>
 

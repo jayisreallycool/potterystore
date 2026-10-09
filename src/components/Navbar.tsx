@@ -41,6 +41,7 @@ interface NavbarProps {
   onOpenTerms?: () => void;
   onOpenShipping?: () => void;
   onOpenContact?: () => void;
+  onOpenArtisanProfile?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -62,7 +63,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenPrivacy,
   onOpenTerms,
   onOpenShipping,
-  onOpenContact
+  onOpenContact,
+  onOpenArtisanProfile
 }) => {
   const { user, isAdmin, openAuthModal, logOut } = useAuth();
   const [isMuted, setIsMuted] = useState(ceramicAudio.getIsMuted());
@@ -148,6 +150,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="group text-left min-h-[44px] flex items-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B9552D] focus-visible:ring-offset-4 focus-visible:ring-offset-[#FAF7F2]"
             >
               <Logo />
+            </button>
+
+            {/* Artisan Profile Link (Hidden on mobile) */}
+            <button
+              id="navbar-artisan-profile-btn"
+              onClick={onOpenArtisanProfile}
+              aria-label="Learn about Cliff Cooks"
+              className="hidden sm:block text-xs font-medium text-[#8B5A3E] hover:text-[#2C2723] transition-colors ml-2 px-2 py-1 rounded-lg hover:bg-[#E2B17B]/10"
+              title="Meet Cliff Cooks"
+            >
+              Cliff Cooks
             </button>
           </div>
 

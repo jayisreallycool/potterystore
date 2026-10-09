@@ -20,6 +20,7 @@ import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { TermsOfService } from './components/TermsOfService';
 import { ShippingReturns } from './components/ShippingReturns';
 import { ContactPage } from './components/ContactPage';
+import { ArtisanProfileModal } from './components/ArtisanProfileModal';
 import { AnalyticsDashboard } from './components/AnalyticsDashboard';
 import { WishlistNotifications } from './components/WishlistNotifications';
 import { FloatingCartWidget } from './components/FloatingCartWidget';
@@ -123,6 +124,9 @@ export default function App() {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [isShippingOpen, setIsShippingOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+
+  // Artisan profile modal
+  const [isArtisanModalOpen, setIsArtisanModalOpen] = useState(false);
 
   // Filter state
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
@@ -368,6 +372,7 @@ export default function App() {
         onOpenTerms={() => setIsTermsOpen(true)}
         onOpenShipping={() => setIsShippingOpen(true)}
         onOpenContact={() => setIsContactOpen(true)}
+        onOpenArtisanProfile={() => setIsArtisanModalOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -551,6 +556,12 @@ export default function App() {
 
       {/* Email Capture Modal */}
       <EmailCaptureModal />
+
+      {/* Artisan Profile Modal */}
+      <ArtisanProfileModal
+        isOpen={isArtisanModalOpen}
+        onClose={() => setIsArtisanModalOpen(false)}
+      />
 
     </div>
   );

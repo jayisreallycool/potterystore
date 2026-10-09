@@ -56,7 +56,7 @@ export const AdminConsoleExtended: React.FC<AdminConsoleExtendedProps> = ({
 }) => {
   const { user, isAdmin } = useAuth();
   const [activeTab, setActiveTab] = useState<
-    'dashboard' | 'analytics' | 'email' | 'subscribers' | 'automations' | 'content' | 'seo' | 'integrations'
+    'dashboard' | 'analytics' | 'email' | 'subscribers' | 'automations' | 'content' | 'seo' | 'integrations' | 'reservations'
   >('dashboard');
   const [dateRange, setDateRange] = useState('30d');
   const [refreshing, setRefreshing] = useState(false);
@@ -150,6 +150,7 @@ export const AdminConsoleExtended: React.FC<AdminConsoleExtendedProps> = ({
               { id: 'analytics', label: 'Analytics', icon: BarChart3 },
               { id: 'email', label: 'Email Campaigns', icon: Mail },
               { id: 'subscribers', label: 'Subscribers', icon: Users },
+              { id: 'reservations', label: 'Reservations', icon: Clock },
               { id: 'automations', label: 'Automations', icon: Zap },
               { id: 'content', label: 'Content', icon: FileText },
               { id: 'seo', label: 'SEO & Social', icon: TrendingUp },
@@ -379,6 +380,67 @@ export const AdminConsoleExtended: React.FC<AdminConsoleExtendedProps> = ({
                         <Button variant="secondary" size="sm">Remove</Button>
                       </div>
                     ))}
+                </div>
+              </SectionCard>
+            </motion.div>
+          )}
+
+          {/* Reservations Tab */}
+          {activeTab === 'reservations' && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-serif font-bold mb-1">Product Reservations</h2>
+                <p className="text-sm text-[#A69B8E]">Manage customer reservations and holds</p>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <KPICard
+                  title="Total Reservations"
+                  value="0"
+                  change="Pending confirmation"
+                  icon={Clock}
+                  color="blue"
+                />
+                <KPICard
+                  title="Confirmed"
+                  value="0"
+                  change="Ready to fulfill"
+                  icon={CheckCircle2}
+                  color="green"
+                />
+                <KPICard
+                  title="Expired"
+                  value="0"
+                  change="Past 7-day hold"
+                  icon={Archive}
+                  color="gray"
+                />
+              </div>
+
+              <SectionCard title="Recent Reservations" icon={Clock}>
+                <div className="space-y-3">
+                  <div className="text-center py-12">
+                    <Clock className="w-12 h-12 text-[#8A7B6D] mx-auto mb-3 opacity-50" />
+                    <p className="text-[#A69B8E]">No active reservations yet</p>
+                    <p className="text-xs text-[#7F7062] mt-1">Reservations will appear here as customers request holds</p>
+                  </div>
+                </div>
+              </SectionCard>
+
+              <SectionCard title="Reservation Status Guide" icon={Users}>
+                <div className="space-y-2 text-sm text-[#B5A89A]">
+                  <div className="flex gap-3 items-start">
+                    <span className="px-2 py-1 rounded text-xs font-semibold bg-amber-900/30 text-amber-300 whitespace-nowrap">PENDING</span>
+                    <span>Awaiting confirmation from studio</span>
+                  </div>
+                  <div className="flex gap-3 items-start">
+                    <span className="px-2 py-1 rounded text-xs font-semibold bg-emerald-900/30 text-emerald-300 whitespace-nowrap">CONFIRMED</span>
+                    <span>Hold is active, customer can proceed to purchase</span>
+                  </div>
+                  <div className="flex gap-3 items-start">
+                    <span className="px-2 py-1 rounded text-xs font-semibold bg-red-900/30 text-red-300 whitespace-nowrap">EXPIRED</span>
+                    <span>7-day hold period has ended, item is available again</span>
+                  </div>
                 </div>
               </SectionCard>
             </motion.div>

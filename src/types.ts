@@ -126,3 +126,17 @@ export interface Wishlist {
   createdAt: number;
   updatedAt: number;
 }
+
+// Feature: Product Reservations
+export interface ProductReservation {
+  id: string;
+  productId: string;
+  productName: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string;
+  status: 'pending' | 'confirmed' | 'cancelled' | 'expired';
+  reservedAt: string;
+  expiresAt: string; // 7 days from now
+  notes?: string;
+}

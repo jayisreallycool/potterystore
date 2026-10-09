@@ -24,6 +24,8 @@ import { ContactPage } from './components/ContactPage';
 import { ArtisanProfileModal } from './components/ArtisanProfileModal';
 import { AnalyticsDashboard } from './components/AnalyticsDashboard';
 import { WishlistNotifications } from './components/WishlistNotifications';
+import { ReservationModal } from './components/ReservationModal';
+import { CustomWorkSection } from './components/CustomWorkSection';
 import { FloatingCartWidget } from './components/FloatingCartWidget';
 import { CookieConsent } from './components/CookieConsent';
 import { EmailCaptureModal } from './components/EmailCaptureModal';
@@ -91,6 +93,10 @@ export default function App() {
   const routePieceId = route.name === 'piece' ? route.id : null;
   const detailedProduct = routePieceId ? products.find((p) => p.id === routePieceId) || null : null;
   const [commissionReference, setCommissionReference] = useState<PotteryProduct | null>(null);
+
+  // Reservation modal state
+  const [reservationProduct, setReservationProduct] = useState<PotteryProduct | null>(null);
+  const [isReservationOpen, setIsReservationOpen] = useState(false);
 
   const openProductDetail = useCallback((product: PotteryProduct) => {
     navigate(piecePath(product.id));
@@ -225,10 +231,8 @@ export default function App() {
 
   // Reserve Piece direct reservation handler
   const handleReservePiece = (product: PotteryProduct, options?: { inscription?: string }) => {
-    handleAddToCart(product, options);
-    if (routePieceId) navigate('/');
-    setIsCartOpen(false);
-    setIsCheckoutOpen(true);
+    setReservationProduct(product);
+    setIsReservationOpen(true);
   };
 
   const handleUpdateQuantity = (productId: string, qty: number) => {
@@ -453,6 +457,11 @@ export default function App() {
         )}
       </main>
 
+      {/* Custom Work Section */}
+      {!isAboutOpen && !isCommissionsOpen && (
+        <CustomWorkSection onRequestCustom={() => openCommissions(null)} />
+      )}
+
       {/* Footer */}
       <Footer
         onReplayIntro={() => setIntroKey((k) => k + 1)}
@@ -477,6 +486,16 @@ export default function App() {
         onReservePiece={handleReservePiece}
         onToggleWishlist={handleToggleWishlist}
         isWishlisted={detailedProduct ? isWishlisted(detailedProduct.id) : false}
+      />
+
+      {/* Reservation Modal */}
+      <ReservationModal
+        isOpen={isReservationOpen}
+        onClose={() => {
+          setIsReservationOpen(false);
+          setReservationProduct(null);
+        }}
+        product={reservationProduct}
       />
 
       {/* Cart Drawer */}

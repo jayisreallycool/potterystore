@@ -1,19 +1,19 @@
-import { 
-  collection, 
-  doc, 
-  setDoc, 
-  getDoc, 
-  getDocs, 
-  updateDoc, 
-  deleteDoc, 
-  query, 
-  where, 
-  orderBy, 
-  onSnapshot 
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+  onSnapshot
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, auth, storage, handleFirestoreError, OperationType } from '../lib/firebase';
-import { PotteryProduct } from '../types';
+import { PotteryProduct, ProductReservation } from '../types';
 import { POTTERY_PRODUCTS } from '../data/potteryData';
 
 export interface OrderItemRecord {
@@ -276,4 +276,64 @@ export function subscribeToInquiries(callback: (inquiries: InquiryRecord[]) => v
       handleFirestoreError(err, OperationType.LIST, 'inquiries');
     }
   );
+}
+
+// Create a product reservation
+export async function createReservation(reservation: ProductReservation): Promise<void> {
+  const path = `reservations/${reservation.id}`;
+  try {
+    const docRef = doc(db, 'reservations', reservation.id);
+    await setDoc(docRef, reservation);
+  } catch (err) {
+    handleFirestoreError(err, OperationType.CREATE, path);
+  }
+}
+
+// Get active reservations for a product
+export function subscribeToProductReservations(productId: string, callback: (reservations: ProductReservation[]) => void) {
+  const colRef = collection(db, 'reservations');
+  const q = query(colRef, where('productId', '==', productId), where('status', 'in', ['pending', 'confirmed']));
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const list: ProductReservation[] = [];
+      snapshot.forEach((d) => {
+        list.push(d.data() as ProductReservation);
+      });
+      callback(list);
+    },
+    (err) => {
+      handleFirestoreError(err, OperationType.LIST, `reservations/product/${productId}`);
+    }
+  );
+}
+
+// Get all reservations (Admin only)
+export function subscribeToAllReservations(callback: (reservations: ProductReservation[]) => void) {
+  const colRef = collection(db, 'reservations');
+  return onSnapshot(
+    colRef,
+    (snapshot) => {
+      const list: ProductReservation[] = [];
+      snapshot.forEach((d) => {
+        list.push(d.data() as ProductReservation);
+      });
+      list.sort((a, b) => new Date(b.reservedAt).getTime() - new Date(a.reservedAt).getTime());
+      callback(list);
+    },
+    (err) => {
+      handleFirestoreError(err, OperationType.LIST, 'reservations');
+    }
+  );
+}
+
+// Update reservation status (Admin only)
+export async function updateReservationStatus(reservationId: string, status: ProductReservation['status']): Promise<void> {
+  const path = `reservations/${reservationId}`;
+  try {
+    const docRef = doc(db, 'reservations', reservationId);
+    await updateDoc(docRef, { status });
+  } catch (err) {
+    handleFirestoreError(err, OperationType.UPDATE, path);
+  }
 }

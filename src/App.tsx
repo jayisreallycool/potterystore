@@ -29,6 +29,7 @@ import { CustomWorkSection } from './components/CustomWorkSection';
 import { FloatingCartWidget } from './components/FloatingCartWidget';
 import { CookieConsent } from './components/CookieConsent';
 import { EmailCaptureModal } from './components/EmailCaptureModal';
+import { AuthDebugPanel } from './components/AuthDebugPanel';
 import { navigate, piecePath, useRoute } from './utils/router';
 import { subscribeToProducts, subscribeToAllOrders, subscribeToInquiries } from './services/storeService';
 import { updateSEOForProduct, updateSEOForPage } from './utils/seo';
@@ -605,6 +606,9 @@ export default function App() {
         isOpen={isArtisanModalOpen}
         onClose={() => setIsArtisanModalOpen(false)}
       />
+
+      {/* Auth Debug Panel (Development Only) */}
+      <AuthDebugPanel />
 
     </div>
   );

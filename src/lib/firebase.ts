@@ -35,7 +35,16 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
+
+// Configure Google Auth Provider
 export const googleProvider = new GoogleAuthProvider();
+googleProvider.addScope('profile');
+googleProvider.addScope('email');
+
+// Set custom parameters for better UX
+googleProvider.setCustomParameters({
+  prompt: 'consent' // Force consent screen to appear every time
+});
 
 export const ADMIN_EMAIL = 'buddhacmd02@gmail.com';
 

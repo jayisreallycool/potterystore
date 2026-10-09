@@ -11,13 +11,19 @@ import {
   Share2,
   PencilRuler
 } from 'lucide-react';
-import { PotteryProduct } from '../types';
+import { PotteryProduct, ProductReview } from '../types';
 import { ceramicAudio } from '../utils/audio';
 import { getAvailability, formatSize, formatWeight, formatCapacity } from '../utils/availability';
 import { InventoryBadge, LastOneAlert } from './InventoryBadge';
 import { SimilarPiecesCarousel } from './SimilarPiecesCarousel';
 import { ScrollingAnnouncement } from './ScrollingAnnouncement';
 import { generateProductSchema, injectSchema, updateSEOMetadata } from '../utils/enhancedSEO';
+import { ReviewsPanel } from './ReviewsPanel';
+import { RestockAlertButton } from './RestockAlertButton';
+import { WishlistShareButton } from './WishlistShareButton';
+import { ProductStorySection } from './ProductStorySection';
+import { notificationService } from '../services/notificationService';
+import { wishlistService } from '../services/wishlistService';
 
 interface ProductDetailModalProps {
   product: PotteryProduct | null;
@@ -44,12 +50,27 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [inscription, setInscription] = useState('');
   const [addedAnimation, setAddedAnimation] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [reviews, setReviews] = useState<ProductReview[]>([]);
+  const [avgRating, setAvgRating] = useState(0);
+  const [wishlistUuid, setWishlistUuid] = useState('');
 
   // Start fresh whenever a different piece is opened
   useEffect(() => {
     setSelectedImageIndex(0);
     setInscription('');
     setLinkCopied(false);
+
+    if (product) {
+      // Load reviews for this product
+      const productReviews = notificationService.getProductReviews(product.id);
+      setReviews(productReviews);
+
+      const { avg } = notificationService.getAverageRating(product.id);
+      setAvgRating(avg);
+
+      // Get wishlist UUID for sharing
+      setWishlistUuid(wishlistService.getShareableUuid());
+    }
   }, [product?.id]);
 
   // Update SEO metadata and schema for the product
@@ -106,6 +127,32 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       setAddedAnimation(false);
       onClose();
     }, 1200);
+  };
+
+  const handleAddReview = (review: Omit<ProductReview, 'id' | 'createdAt' | 'verified'>) => {
+    if (!product) return;
+    notificationService.saveProductReview(product.id, {
+      ...review,
+      verified: true // Mark as verified since they're viewing the product
+    });
+
+    const updated = notificationService.getProductReviews(product.id);
+    setReviews(updated);
+
+    const { avg } = notificationService.getAverageRating(product.id);
+    setAvgRating(avg);
+  };
+
+  const handleRestockAlert = (email: string) => {
+    if (!product) return;
+    const success = notificationService.subscribeToRestockAlert(product.id, email);
+    if (success) {
+      // Send restock alert email (will be queued)
+      notificationService.sendRestockAlert(email, {
+        productName: product.name,
+        productUrl: window.location.href
+      });
+    }
   };
 
   return (
@@ -425,6 +472,45 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 )}
 
               </div>
+            </div>
+
+            {/* Product Story Section */}
+            {(product.story || product.inspiration || product.process) && (
+              <div className="mt-8 pt-8 border-t border-[#E3D9CB]">
+                <ProductStorySection
+                  story={product.story}
+                  inspiration={product.inspiration}
+                  process={product.process}
+                  dimensions={product.dimensions}
+                />
+              </div>
+            )}
+
+            {/* Reviews Panel */}
+            <div className="mt-8 pt-8 border-t border-[#E3D9CB]">
+              <ReviewsPanel
+                reviews={reviews}
+                avgRating={avgRating}
+                reviewCount={reviews.length}
+                onAddReview={handleAddReview}
+              />
+            </div>
+
+            {/* Restock Alert - Show when product is sold out */}
+            {availability.isSold && (
+              <div className="mt-8 pt-8 border-t border-[#E3D9CB]">
+                <RestockAlertButton
+                  productName={product.name}
+                  onSubscribe={handleRestockAlert}
+                />
+              </div>
+            )}
+
+            {/* Wishlist Share Button */}
+            <div className="mt-8 pt-8 border-t border-[#E3D9CB]">
+              <WishlistShareButton
+                wishlistUuid={wishlistUuid}
+              />
             </div>
 
             {/* Similar Pieces Carousel - Below Main Content */}

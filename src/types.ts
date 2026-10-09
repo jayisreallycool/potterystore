@@ -62,6 +62,12 @@ export interface PotteryProduct {
   tactileHotspots: TactilePoint[];
   roomContextImage: string;
   accentColor: string; // e.g. '#8B4513'
+  // Feature 11: Product Stories
+  story?: string; // Rich narrative about the piece
+  inspiration?: string; // What inspired this design
+  process?: string; // How it was made
+  avgRating?: number; // Average review rating (0-5)
+  reviewCount?: number; // Total number of reviews
 }
 
 export interface CartItem {
@@ -81,4 +87,42 @@ export interface FilterState {
   inStockOnly: boolean;
   searchQuery: string;
   sortBy: 'featured' | 'price-asc' | 'price-desc' | 'batch-newest';
+}
+
+// Feature 9: Review & Rating System
+export interface ProductReview {
+  id: string;
+  productId: string;
+  customerId: string;
+  customerName: string;
+  rating: number; // 1-5 stars
+  text: string;
+  verified: boolean; // Only verified purchasers can review
+  createdAt: number; // Timestamp
+  helpful?: number; // Count of helpful votes
+}
+
+// Feature 7: Restock Alerts
+export interface RestockAlert {
+  id: string;
+  customerId: string;
+  productId: string;
+  email: string;
+  createdAt: number;
+  notificationSent: boolean;
+}
+
+// Feature 10: Wishlist Sharing
+export interface WishlistItem {
+  productId: string;
+  addedAt: number;
+}
+
+export interface Wishlist {
+  id: string;
+  userId: string;
+  items: WishlistItem[];
+  uuid?: string; // For shareable links
+  createdAt: number;
+  updatedAt: number;
 }
